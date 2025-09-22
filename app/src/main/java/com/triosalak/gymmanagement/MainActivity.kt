@@ -29,42 +29,35 @@ class MainActivity : AppCompatActivity() {
 
         sessionManager = SessionManager(this)
 
-//        val token = sessionManager.authToken.first()
-//
-//        Log.d("CekToken", "Token retrieved: $token")
-//
-//        // Cek apakah token ada dan tidak kosong
-//        if (!token.isNullOrBlank()) {
-//            // Token ada, lanjutkan ke MainActivity
-//            navigateTo(MainActivity::class.java)
-//        } else {
-//            navigateTo(LoginActivity::class.java)
-//        }
-
         lifecycleScope.launch {
+            val token = sessionManager.authToken.firstOrNull()
+            Log.d("CekToken", "Token retrieved: $token")
 
-            val navView: BottomNavigationView = binding.navView
-
-            val navController = findNavController(R.id.nav_host_fragment_activity_main)
-            // Passing each menu ID as a set of Ids because each
-            // menu should be considered as top level destinations.
-            val appBarConfiguration = AppBarConfiguration(
-                setOf(
-                    R.id.navigation_home,
-                    R.id.navigation_dashboard,
-                    R.id.navigation_notifications
-                )
-            )
-            setupActionBarWithNavController(navController, appBarConfiguration)
-            navView.setupWithNavController(navController)
-
+            if (token.isNullOrBlank()) {
+                // Kalau token kosong, paksa ke LoginActivity
+                navigateTo(LoginActivity::class.java)
+            } else {
+                // Kalau token ada, langsung setup tampilan utama
+                setupBottomNav()
+            }
         }
-
     }
 
-    /**
-     * Fungsi helper untuk navigasi dan menutup activity saat ini.
-     */
+    private fun setupBottomNav() {
+        val navView: BottomNavigationView = binding.navView
+        val navController = findNavController(R.id.nav_host_fragment_activity_main)
+
+        val appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.navigation_home,
+                R.id.navigation_dashboard,
+                R.id.navigation_notifications
+            )
+        )
+        setupActionBarWithNavController(navController, appBarConfiguration)
+        navView.setupWithNavController(navController)
+    }
+
     private fun navigateTo(activityClass: Class<*>) {
         val intent = Intent(this, activityClass)
         startActivity(intent)
