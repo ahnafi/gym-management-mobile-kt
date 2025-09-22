@@ -8,20 +8,20 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 
 interface SulthonApi {
-    @POST("/login")
+    @POST("login")
     suspend fun login(
         @Body loginRequest: LoginRequest
     ): Response<LoginResponse>
 
-    @POST("/register")
+    @POST("register")
     suspend fun register(
         @Body registerRequest: Map<String, String>
     )
 
-    @POST("/logout")
+    @POST("logout")
     suspend fun logout()
 
-    @GET("/users")
+    @GET("users")
     suspend fun getUsers(
         //
     )

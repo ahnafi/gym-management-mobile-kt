@@ -58,19 +58,6 @@ class MainActivity : AppCompatActivity() {
             setupActionBarWithNavController(navController, appBarConfiguration)
             navView.setupWithNavController(navController)
 
-
-            val token = sessionManager.authToken.first()
-
-            Log.d("CekToken", "Token retrieved: $token")
-
-            // Cek apakah token ada dan tidak kosong
-            if (!token.isNullOrBlank()) {
-                // Token ada, lanjutkan ke MainActivity
-                navigateTo(MainActivity::class.java)
-            } else {
-                navigateTo(LoginActivity::class.java)
-            }
-
         }
 
     }

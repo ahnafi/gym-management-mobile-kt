@@ -21,7 +21,7 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         sessionManager = SessionManager(this)
-        viewModel = LoginViewModel(RetrofitInstance.api, sessionManager)
+        viewModel = LoginViewModel(RetrofitInstance.getApiService(sessionManager), sessionManager)
 
         viewModel.loginResult.observe(this) { result ->
             result.fold(
