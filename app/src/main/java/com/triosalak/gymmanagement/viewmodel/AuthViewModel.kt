@@ -37,19 +37,30 @@ class AuthViewModel(
                 Log.d("LOGIN_RESPONSE", "Response: ${response.raw()}")
 
                 if (response.isSuccessful) {
-                    val loginResponse = response.body()!!
-                    val token = loginResponse.data.token
-                    Log.d("LOGIN_SUCCESS", "Token: $token")
+                    val loginResponse = response.body()
+                    if (loginResponse != null) {
+                        val token = loginResponse.data.token
+                        val user = loginResponse.data.user
+                        Log.d("LOGIN_SUCCESS", "Token: $token")
+                        Log.d("LOGIN_SUCCESS", "User: ${user.name} - ${user.email}")
 
-                    sessionManager.saveAuthToken(token)
-                    _loginResult.value = Result.success(loginResponse)
+                        // Simpan token dan user data
+                        sessionManager.saveAuthToken(token)
+                        sessionManager.saveCurrentUser(user)
+
+                        _loginResult.value = Result.success(loginResponse)
+                    } else {
+                        Log.e("LOGIN_FAILED", "Response body is null")
+                        _loginResult.value = Result.failure(Exception("Login failed: Empty response"))
+                    }
                 } else {
-                    Log.e("LOGIN_FAILED", "Error: ${response.code()} - ${response.body()}")
+                    val errorBody = response.errorBody()?.string()
+                    Log.e("LOGIN_FAILED", "Error: ${response.code()} - $errorBody")
                     _loginResult.value =
                         Result.failure(Exception("Login failed: ${response.message()}"))
                 }
             } catch (e: Exception) {
-                Log.e("NETWORK_ERROR", "Error: ${e.localizedMessage}")
+                Log.e("NETWORK_ERROR", "Error: ${e.localizedMessage}", e)
                 _loginResult.value = Result.failure(e)
             }
         }
