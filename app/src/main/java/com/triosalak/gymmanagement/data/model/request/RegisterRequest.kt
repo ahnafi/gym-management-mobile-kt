@@ -2,9 +2,16 @@ package com.triosalak.gymmanagement.data.model.request
 
 import com.google.gson.annotations.SerializedName
 
-data class LoginRequest(
+data class RegisterRequest(
+    @SerializedName("name")
+    val name: String,
+
     @SerializedName("email")
     val email: String,
+
     @SerializedName("password")
-    val password: String
+    val password: String,
+
+    @SerializedName("password_confirmation")
+    val passwordConfirmation: String
 )

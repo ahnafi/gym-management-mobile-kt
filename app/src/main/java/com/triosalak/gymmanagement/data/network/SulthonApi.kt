@@ -1,7 +1,9 @@
-package com.triosalak.gymmanagement.data.netwok
+package com.triosalak.gymmanagement.data.network
 
 import com.triosalak.gymmanagement.data.model.request.LoginRequest
+import com.triosalak.gymmanagement.data.model.request.RegisterRequest
 import com.triosalak.gymmanagement.data.model.response.LoginResponse
+import com.triosalak.gymmanagement.data.model.response.RegisterResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -15,8 +17,8 @@ interface SulthonApi {
 
     @POST("register")
     suspend fun register(
-        @Body registerRequest: Map<String, String>
-    )
+        @Body registerRequest: RegisterRequest
+    ): Response<RegisterResponse>
 
     @POST("logout")
     suspend fun logout()
