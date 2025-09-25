@@ -1,4 +1,4 @@
-package com.triosalak.gymmanagement.ui.notifications
+package com.triosalak.gymmanagement.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

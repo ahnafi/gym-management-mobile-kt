@@ -12,7 +12,6 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.triosalak.gymmanagement.databinding.ActivityMainBinding
 import com.triosalak.gymmanagement.utils.SessionManager
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 
@@ -24,43 +23,65 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        try {
+            binding = ActivityMainBinding.inflate(layoutInflater)
+            setContentView(binding.root)
 
-        sessionManager = SessionManager(this)
+            sessionManager = SessionManager(this)
 
-        lifecycleScope.launch {
-            val token = sessionManager.authToken.firstOrNull()
-            Log.d("CekToken", "Token retrieved: $token")
+            lifecycleScope.launch {
+                try {
+                    val token = sessionManager.authToken.firstOrNull()
+                    Log.d("CekToken", "Token retrieved: $token")
 
-            if (token.isNullOrBlank()) {
-                // Kalau token kosong, paksa ke LoginActivity
-                navigateTo(LoginActivity::class.java)
-            } else {
-                // Kalau token ada, langsung setup tampilan utama
-                setupBottomNav()
+                    if (token.isNullOrBlank()) {
+                        // Kalau token kosong, paksa ke AuthActivity
+                        navigateTo(AuthActivity::class.java)
+                    } else {
+                        // Kalau token ada, langsung setup tampilan utama
+                        setupBottomNav()
+                    }
+                } catch (e: Exception) {
+                    Log.e("MainActivity", "Error checking token: ${e.message}")
+                    // Jika ada error, langsung ke AuthActivity
+                    navigateTo(AuthActivity::class.java)
+                }
             }
+        } catch (e: Exception) {
+            Log.e("MainActivity", "Error in onCreate: ${e.message}")
+            // Jika binding atau setup gagal, langsung ke AuthActivity
+            navigateTo(AuthActivity::class.java)
         }
     }
 
     private fun setupBottomNav() {
-        val navView: BottomNavigationView = binding.navView
-        val navController = findNavController(R.id.nav_host_fragment_activity_main)
+        try {
+            val navView: BottomNavigationView = binding.navView
+            val navController = findNavController(R.id.nav_host_fragment_activity_main)
 
-        val appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.navigation_home,
-                R.id.navigation_dashboard,
-                R.id.navigation_notifications
+            val appBarConfiguration = AppBarConfiguration(
+                setOf(
+                    R.id.navigation_home,
+                    R.id.navigation_dashboard,
+                    R.id.navigation_notifications
+                )
             )
-        )
-        setupActionBarWithNavController(navController, appBarConfiguration)
-        navView.setupWithNavController(navController)
+            setupActionBarWithNavController(navController, appBarConfiguration)
+            navView.setupWithNavController(navController)
+        } catch (e: Exception) {
+            Log.e("MainActivity", "Error setting up navigation: ${e.message}")
+            // Jika navigation setup gagal, kembali ke AuthActivity
+            navigateTo(AuthActivity::class.java)
+        }
     }
 
     private fun navigateTo(activityClass: Class<*>) {
-        val intent = Intent(this, activityClass)
-        startActivity(intent)
-        finish()
+        try {
+            val intent = Intent(this, activityClass)
+            startActivity(intent)
+            finish()
+        } catch (e: Exception) {
+            Log.e("MainActivity", "Error navigating: ${e.message}")
+        }
     }
 }

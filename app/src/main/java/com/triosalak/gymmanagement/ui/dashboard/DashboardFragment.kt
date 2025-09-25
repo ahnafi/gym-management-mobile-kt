@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.triosalak.gymmanagement.databinding.FragmentDashboardBinding
+import com.triosalak.gymmanagement.viewmodel.DashboardViewModel
 
 class DashboardFragment : Fragment() {
 

@@ -1,4 +1,4 @@
-package com.triosalak.gymmanagement.data.netwok
+package com.triosalak.gymmanagement.data.network
 
 import com.triosalak.gymmanagement.utils.Constants
 import com.triosalak.gymmanagement.utils.SessionManager
@@ -6,7 +6,6 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.util.concurrent.TimeUnit
 
 object RetrofitInstance {
 
