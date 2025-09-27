@@ -26,5 +26,7 @@ data class User(
     @SerializedName("created_at")
     val createdAt: String? = null,
     @SerializedName("updated_at")
-    val updatedAt: String? = null
+    val updatedAt: String? = null,
+    @SerializedName("email_verified_at")
+    val emailVerifiedAt: String? = null
 )

@@ -6,7 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import coil.load
+import com.triosalak.gymmanagement.R
 import com.triosalak.gymmanagement.databinding.FragmentProfileBinding
+import com.triosalak.gymmanagement.utils.Constants
 import com.triosalak.gymmanagement.utils.SessionManager
 import kotlinx.coroutines.launch
 
@@ -85,6 +88,7 @@ class ProfileFragment : Fragment() {
                         tvMembershipStatus.text = it.membershipStatus ?: "Tidak aktif"
                         tvMembershipEndDate.text = it.membershipEndDate ?: "Tidak ada"
                         tvProfileBio.text = it.profileBio ?: "Bio kosong"
+                        ivProfilePicture.load("${Constants.STORAGE_URL}${it.profileImage}")
 
                         // Log semua data user
                         android.util.Log.d("USER_DATA", "ID: ${it.id}")
@@ -94,6 +98,8 @@ class ProfileFragment : Fragment() {
                         android.util.Log.d("USER_DATA", "Role: ${it.role}")
                         android.util.Log.d("USER_DATA", "Membership: ${it.membershipStatus}")
                         android.util.Log.d("USER_DATA", "Created: ${it.createdAt}")
+                        android.util.Log.d("USER_DATA", "Profile image : ${Constants.STORAGE_URL}${it.profileImage}")
+                        android.util.Log.d("USER_EMAIL_VERIFICATION", "email verified at : ${it.emailVerifiedAt}")
                     }
                 }
             }
@@ -104,7 +110,7 @@ class ProfileFragment : Fragment() {
         // Cara mengambil user data secara synchronous
         val currentUser = sessionManager.getCurrentUserSync()
         currentUser?.let { user ->
-            android.util.Log.d("USER_SYNC", "User loaded: ${user.name} - ${user.email}")
+            android.util.Log.d("USER_SYNC", "User loaded: ${user.name} - ${user.email} - ${user.emailVerifiedAt}")
         }
     }
 
