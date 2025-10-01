@@ -7,8 +7,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.triosalak.gymmanagement.data.model.request.LoginRequest
 import com.triosalak.gymmanagement.data.model.request.RegisterRequest
+import com.triosalak.gymmanagement.data.model.response.CurrentUserResponse
 import com.triosalak.gymmanagement.data.model.response.LoginResponse
 import com.triosalak.gymmanagement.data.model.response.RegisterResponse
+import com.triosalak.gymmanagement.data.model.response.ResendVerificationResponse
 import com.triosalak.gymmanagement.data.network.SulthonApi
 import com.triosalak.gymmanagement.utils.SessionManager
 import kotlinx.coroutines.launch
@@ -24,6 +26,19 @@ class AuthViewModel(
     // Add LiveData for register result
     private val _registerResult = MutableLiveData<Result<RegisterResponse>>()
     val registerResult: LiveData<Result<RegisterResponse>> = _registerResult
+
+    // Add LiveData for email verification result
+    private val _resendVerificationResult = MutableLiveData<Result<ResendVerificationResponse>>()
+    val resendVerificationResult: LiveData<Result<ResendVerificationResponse>> =
+        _resendVerificationResult
+
+    // Add LiveData for email verification status
+    private val _emailVerificationStatus = MutableLiveData<Boolean>()
+    val emailVerificationStatus: LiveData<Boolean> = _emailVerificationStatus
+
+    // Add LiveData for current user result
+    private val _currentUserResult = MutableLiveData<Result<CurrentUserResponse>>()
+    val currentUserResult: LiveData<Result<CurrentUserResponse>> = _currentUserResult
 
     fun login(email: String, password: String) {
         val loginRequest = LoginRequest(email, password)
@@ -51,7 +66,8 @@ class AuthViewModel(
                         _loginResult.value = Result.success(loginResponse)
                     } else {
                         Log.e("LOGIN_FAILED", "Response body is null")
-                        _loginResult.value = Result.failure(Exception("Login failed: Empty response"))
+                        _loginResult.value =
+                            Result.failure(Exception("Login failed: Empty response"))
                     }
                 } else {
                     val errorBody = response.errorBody()?.string()
@@ -110,7 +126,122 @@ class AuthViewModel(
         try {
             api.logout()
         } finally {
-            sessionManager.clearAuthToken()
+            sessionManager.clearAllData()
         }
     }
+
+    fun resendVerification() {
+        viewModelScope.launch {
+            try {
+                val response = api.resendVerification()
+
+                Log.d("RESEND_VERIFICATION_RESPONSE", "Response code: ${response.code()}")
+
+                if (response.isSuccessful) {
+                    val resendResponse = response.body()
+                    if (resendResponse != null) {
+                        Log.d("RESEND_VERIFICATION_SUCCESS", "Message: ${resendResponse.message}")
+                        _resendVerificationResult.value = Result.success(resendResponse)
+                    } else {
+                        Log.e("RESEND_VERIFICATION_FAILED", "Response body is null")
+                        _resendVerificationResult.value =
+                            Result.failure(Exception("Resend verification failed: Empty response"))
+                    }
+                } else {
+                    val errorBody = response.errorBody()?.string()
+                    Log.e("RESEND_VERIFICATION_FAILED", "Error: ${response.code()} - $errorBody")
+
+                    // Handle specific HTTP error codes
+                    val errorMessage = when (response.code()) {
+                        400 -> "Email sudah diverifikasi"
+                        401 -> "Unauthorized: Silakan login ulang"
+                        403 -> "Forbidden: Email sudah diverifikasi atau akun tidak ditemukan"
+                        404 -> "Endpoint tidak ditemukan"
+                        422 -> "Data tidak valid"
+                        500 -> "Server error: Coba lagi nanti"
+                        else -> "Network error (${response.code()}): ${response.message()}"
+                    }
+
+                    Log.d("RESEND_VERIFICATION_ERROR", errorMessage)
+
+                    _resendVerificationResult.value = Result.failure(Exception(errorMessage))
+                }
+            } catch (e: com.google.gson.JsonSyntaxException) {
+                Log.e("NETWORK_ERROR", "JSON parsing error: ${e.localizedMessage}", e)
+                _resendVerificationResult.value =
+                    Result.failure(Exception("Server mengembalikan response yang tidak valid. Coba lagi nanti."))
+            } catch (e: java.net.UnknownHostException) {
+                Log.e("NETWORK_ERROR", "Network error: ${e.localizedMessage}", e)
+                _resendVerificationResult.value =
+                    Result.failure(Exception("Tidak dapat terhubung ke server. Periksa koneksi internet Anda."))
+            } catch (e: java.net.SocketTimeoutException) {
+                Log.e("NETWORK_ERROR", "Timeout error: ${e.localizedMessage}", e)
+                _resendVerificationResult.value =
+                    Result.failure(Exception("Request timeout. Coba lagi nanti."))
+            } catch (e: Exception) {
+                Log.e("NETWORK_ERROR", "Error: ${e.localizedMessage}", e)
+                _resendVerificationResult.value =
+                    Result.failure(Exception("Terjadi kesalahan: ${e.localizedMessage}"))
+            }
+        }
+    }
+
+    // Method untuk mengecek status verifikasi email
+    fun checkEmailVerificationStatus() {
+        viewModelScope.launch {
+            val isVerified = sessionManager.isEmailVerified()
+            _emailVerificationStatus.value = isVerified
+        }
+    }
+
+    fun getCurrentUser() {
+        viewModelScope.launch {
+            try {
+                val response = api.getCurrentUser()
+
+                if (response.isSuccessful) {
+                    val currentUserResponse = response.body()
+                    if (currentUserResponse != null) {
+                        val user = currentUserResponse.data // Extract user from response
+                        Log.d("GET_CURRENT_USER", "User: ${user.name} - ${user.email}")
+                        Log.d("GET_CURRENT_USER", "Email verified: ${user.emailVerifiedAt}")
+
+                        // Update user data di session
+                        sessionManager.saveCurrentUser(user)
+                        _currentUserResult.value = Result.success(currentUserResponse)
+
+                        // Update email verification status
+                        _emailVerificationStatus.value = user.emailVerifiedAt != null
+                    } else {
+                        Log.e("GET_CURRENT_USER", "Response body is null")
+                        _currentUserResult.value = Result.failure(Exception("User not found"))
+                    }
+                } else {
+                    val errorBody = response.errorBody()?.string()
+                    Log.e("GET_CURRENT_USER", "Error: ${response.code()} - $errorBody")
+
+                    val errorMessage = when (response.code()) {
+                        401 -> "Unauthorized: Silakan login ulang"
+                        403 -> "Access forbidden"
+                        404 -> "User not found"
+                        500 -> "Server error: Coba lagi nanti"
+                        else -> "Error ${response.code()}: ${response.message()}"
+                    }
+
+                    _currentUserResult.value = Result.failure(Exception(errorMessage))
+                }
+
+            } catch (e: com.google.gson.JsonSyntaxException) {
+                Log.e("GET_CURRENT_USER", "JSON parsing error: ${e.localizedMessage}", e)
+                _currentUserResult.value = Result.failure(Exception("Server mengembalikan response yang tidak valid"))
+            } catch (e: java.net.UnknownHostException) {
+                Log.e("GET_CURRENT_USER", "Network error: ${e.localizedMessage}", e)
+                _currentUserResult.value = Result.failure(Exception("Tidak dapat terhubung ke server"))
+            } catch (e: Exception) {
+                Log.e("GET_CURRENT_USER", "Error fetching current user: ${e.localizedMessage}", e)
+                _currentUserResult.value = Result.failure(Exception("Terjadi kesalahan: ${e.localizedMessage}"))
+            }
+        }
+    }
+
 }

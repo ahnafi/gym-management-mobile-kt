@@ -4,13 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import coil.load
 import com.triosalak.gymmanagement.R
+import com.triosalak.gymmanagement.data.network.RetrofitInstance
 import com.triosalak.gymmanagement.databinding.FragmentProfileBinding
 import com.triosalak.gymmanagement.utils.Constants
 import com.triosalak.gymmanagement.utils.SessionManager
+import com.triosalak.gymmanagement.viewmodel.AuthViewModel
 import kotlinx.coroutines.launch
 
 class ProfileFragment : Fragment() {
@@ -18,6 +21,7 @@ class ProfileFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var sessionManager: SessionManager
+    private lateinit var authViewModel: AuthViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,6 +36,8 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         sessionManager = SessionManager(requireContext())
+        authViewModel =
+            AuthViewModel(RetrofitInstance.getApiService(sessionManager), sessionManager)
 
         // Setup button click listeners
         setupButtonClickListeners()
@@ -52,7 +58,11 @@ class ProfileFragment : Fragment() {
         // Edit profile button (placeholder for future implementation)
         binding.btnEditProfile.setOnClickListener {
             // TODO: Navigate to edit profile screen
-            android.widget.Toast.makeText(requireContext(), "Edit Profile coming soon!", android.widget.Toast.LENGTH_SHORT).show()
+            android.widget.Toast.makeText(
+                requireContext(),
+                "Edit Profile coming soon!",
+                android.widget.Toast.LENGTH_SHORT
+            ).show()
         }
     }
 
@@ -60,16 +70,28 @@ class ProfileFragment : Fragment() {
         lifecycleScope.launch {
             try {
                 // Clear all user data
-                sessionManager.clearAllData()
+                authViewModel.logout()
 
                 // Navigate back to AuthActivity
-                val intent = android.content.Intent(requireContext(), com.triosalak.gymmanagement.AuthActivity::class.java)
+                val intent = android.content.Intent(
+                    requireContext(),
+                    com.triosalak.gymmanagement.AuthActivity::class.java
+                )
+
+                Toast.makeText(requireContext(), "Logout berhasil!", Toast.LENGTH_SHORT).show()
+
                 intent.flags = android.content.Intent.FLAG_ACTIVITY_NEW_TASK or android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK
+
                 startActivity(intent)
+
                 requireActivity().finish()
             } catch (e: Exception) {
                 android.util.Log.e("ProfileFragment", "Error during logout", e)
-                android.widget.Toast.makeText(requireContext(), "Error saat logout: ${e.message}", android.widget.Toast.LENGTH_LONG).show()
+                android.widget.Toast.makeText(
+                    requireContext(),
+                    "Error saat logout: ${e.message}",
+                    android.widget.Toast.LENGTH_LONG
+                ).show()
             }
         }
     }
@@ -98,8 +120,14 @@ class ProfileFragment : Fragment() {
                         android.util.Log.d("USER_DATA", "Role: ${it.role}")
                         android.util.Log.d("USER_DATA", "Membership: ${it.membershipStatus}")
                         android.util.Log.d("USER_DATA", "Created: ${it.createdAt}")
-                        android.util.Log.d("USER_DATA", "Profile image : ${Constants.STORAGE_URL}${it.profileImage}")
-                        android.util.Log.d("USER_EMAIL_VERIFICATION", "email verified at : ${it.emailVerifiedAt}")
+                        android.util.Log.d(
+                            "USER_DATA",
+                            "Profile image : ${Constants.STORAGE_URL}${it.profileImage}"
+                        )
+                        android.util.Log.d(
+                            "USER_EMAIL_VERIFICATION",
+                            "email verified at : ${it.emailVerifiedAt}"
+                        )
                     }
                 }
             }
@@ -110,7 +138,10 @@ class ProfileFragment : Fragment() {
         // Cara mengambil user data secara synchronous
         val currentUser = sessionManager.getCurrentUserSync()
         currentUser?.let { user ->
-            android.util.Log.d("USER_SYNC", "User loaded: ${user.name} - ${user.email} - ${user.emailVerifiedAt}")
+            android.util.Log.d(
+                "USER_SYNC",
+                "User loaded: ${user.name} - ${user.email} - ${user.emailVerifiedAt}"
+            )
         }
     }
 

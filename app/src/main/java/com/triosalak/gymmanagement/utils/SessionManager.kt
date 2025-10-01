@@ -136,4 +136,46 @@ class SessionManager(private val context: Context) {
             false
         }
     }
+
+    // Fungsi untuk mengecek apakah email sudah diverifikasi
+    suspend fun isEmailVerified(): Boolean {
+        return try {
+            val user = currentUser.first()
+            user?.emailVerifiedAt != null
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    // Synchronous version untuk mengecek email verification
+    fun isEmailVerifiedSync(): Boolean {
+        return try {
+            val user = getCurrentUserSync()
+            user?.emailVerifiedAt != null
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    // Fungsi untuk mengecek apakah user sudah login DAN email sudah diverifikasi
+    suspend fun isUserFullyAuthenticated(): Boolean {
+        return try {
+            val token = authToken.first()
+            val user = currentUser.first()
+            !token.isNullOrEmpty() && user != null && user.emailVerifiedAt != null
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    // Synchronous version untuk mengecek full authentication
+    fun isUserFullyAuthenticatedSync(): Boolean {
+        return try {
+            val token = getAuthTokenSync()
+            val user = getCurrentUserSync()
+            !token.isNullOrEmpty() && user != null && user.emailVerifiedAt != null
+        } catch (e: Exception) {
+            false
+        }
+    }
 }

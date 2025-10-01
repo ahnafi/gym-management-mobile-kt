@@ -32,17 +32,30 @@ class MainActivity : AppCompatActivity() {
             lifecycleScope.launch {
                 try {
                     val token = sessionManager.authToken.firstOrNull()
-                    Log.d("CekToken", "Token retrieved: $token")
+                    val isEmailVerified = sessionManager.isEmailVerified()
 
-                    if (token.isNullOrBlank()) {
-                        // Kalau token kosong, paksa ke AuthActivity
-                        navigateTo(AuthActivity::class.java)
-                    } else {
-                        // Kalau token ada, langsung setup tampilan utama
-                        setupBottomNav()
+                    Log.d("MainActivity", "Token: $token")
+                    Log.d("MainActivity", "Email verified: $isEmailVerified")
+
+                    when {
+                        token.isNullOrBlank() -> {
+                            // Kalau token kosong, paksa ke AuthActivity
+                            Log.d("MainActivity", "No token found, redirecting to auth")
+                            navigateTo(AuthActivity::class.java)
+                        }
+                        !isEmailVerified -> {
+                            // Kalau token ada tapi email belum diverifikasi, ke AuthActivity dengan email verification
+                            Log.d("MainActivity", "Email not verified, redirecting to verification")
+                            navigateToEmailVerification()
+                        }
+                        else -> {
+                            // Kalau token ada dan email sudah diverifikasi, langsung setup tampilan utama
+                            Log.d("MainActivity", "Fully authenticated, setting up dashboard")
+                            setupBottomNav()
+                        }
                     }
                 } catch (e: Exception) {
-                    Log.e("MainActivity", "Error checking token: ${e.message}")
+                    Log.e("MainActivity", "Error checking authentication: ${e.message}")
                     // Jika ada error, langsung ke AuthActivity
                     navigateTo(AuthActivity::class.java)
                 }
@@ -83,6 +96,17 @@ class MainActivity : AppCompatActivity() {
             finish()
         } catch (e: Exception) {
             Log.e("MainActivity", "Error navigating: ${e.message}")
+        }
+    }
+
+    private fun navigateToEmailVerification() {
+        try {
+            val intent = Intent(this, AuthActivity::class.java)
+            intent.putExtra("show_email_verification", true)
+            startActivity(intent)
+            finish()
+        } catch (e: Exception) {
+            Log.e("MainActivity", "Error navigating to email verification: ${e.message}")
         }
     }
 }

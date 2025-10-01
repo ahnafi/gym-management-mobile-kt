@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.triosalak.gymmanagement.databinding.ActivityAuthBinding
 import com.triosalak.gymmanagement.ui.auth.LoginFragment
 import com.triosalak.gymmanagement.ui.auth.RegisterFragment
+import com.triosalak.gymmanagement.ui.auth.VerifyEmailFragment
 
 class AuthActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAuthBinding
@@ -15,12 +16,28 @@ class AuthActivity : AppCompatActivity() {
         binding = ActivityAuthBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Default ke LoginFragment
+        // Check if we should show email verification directly
+        val showEmailVerification = intent.getBooleanExtra("show_email_verification", false)
+
+        // Default ke LoginFragment atau VerifyEmailFragment berdasarkan intent
         if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
-                .replace(binding.authContainer.id, LoginFragment())
-                .commit()
+            if (showEmailVerification) {
+                supportFragmentManager.beginTransaction()
+                    .replace(binding.authContainer.id, VerifyEmailFragment())
+                    .commit()
+            } else {
+                supportFragmentManager.beginTransaction()
+                    .replace(binding.authContainer.id, LoginFragment())
+                    .commit()
+            }
         }
+    }
+
+    fun navigateToEmailVerification(){
+        supportFragmentManager.beginTransaction()
+            .replace(binding.authContainer.id, VerifyEmailFragment())
+            .addToBackStack(null)
+            .commit()
     }
 
     fun navigateToRegister() {

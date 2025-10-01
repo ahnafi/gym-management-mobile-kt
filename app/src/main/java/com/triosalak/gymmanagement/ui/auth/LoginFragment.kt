@@ -43,10 +43,20 @@ class LoginFragment : Fragment() {
         viewModel.loginResult.observe(viewLifecycleOwner) { result ->
             binding.loading.visibility = View.GONE
             result.fold(
-                onSuccess = {
+                onSuccess = { loginResponse ->
                     Toast.makeText(requireContext(), "Login berhasil!", Toast.LENGTH_SHORT).show()
-                    startActivity(Intent(requireContext(), MainActivity::class.java))
-                    requireActivity().finish()
+
+                    // Check if email is verified
+                    val user = loginResponse.data.user
+                    if (user.emailVerifiedAt != null) {
+                        // Email sudah diverifikasi, langsung ke MainActivity
+                        startActivity(Intent(requireContext(), MainActivity::class.java))
+                        requireActivity().finish()
+                    } else {
+                        // Email belum diverifikasi, redirect ke halaman verifikasi
+                        Toast.makeText(requireContext(), "Silakan verifikasi email Anda terlebih dahulu", Toast.LENGTH_LONG).show()
+                        (requireActivity() as? AuthActivity)?.navigateToEmailVerification()
+                    }
                 },
                 onFailure = { error ->
                     Toast.makeText(
@@ -78,7 +88,6 @@ class LoginFragment : Fragment() {
             viewModel.login(email, password)
         }
 
-        // ✅ Tombol ke Register - Fixed ID from go_to_register to goToRegister
         binding.goToRegister.setOnClickListener {
             try {
                 (activity as? AuthActivity)?.navigateToRegister()

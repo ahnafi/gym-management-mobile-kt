@@ -2,8 +2,10 @@ package com.triosalak.gymmanagement.data.network
 
 import com.triosalak.gymmanagement.data.model.request.LoginRequest
 import com.triosalak.gymmanagement.data.model.request.RegisterRequest
+import com.triosalak.gymmanagement.data.model.response.CurrentUserResponse
 import com.triosalak.gymmanagement.data.model.response.LoginResponse
 import com.triosalak.gymmanagement.data.model.response.RegisterResponse
+import com.triosalak.gymmanagement.data.model.response.ResendVerificationResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -23,10 +25,10 @@ interface SulthonApi {
     @POST("logout")
     suspend fun logout()
 
-    @GET("users")
-    suspend fun getUsers(
-        //
-    )
+    @GET("profile")
+    suspend fun getCurrentUser(): Response<CurrentUserResponse>
 
+    @POST("resend-verification")
+    suspend fun resendVerification(): Response<ResendVerificationResponse>
 
 }
