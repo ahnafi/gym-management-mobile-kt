@@ -43,18 +43,44 @@ class RegisterFragment : Fragment() {
                 Toast.makeText(requireContext(), "Registrasi berhasil!", Toast.LENGTH_SHORT).show()
                 // Don't navigate immediately, let user see the success message
             }.onFailure { exception ->
-                Toast.makeText(requireContext(), "Registrasi gagal: ${exception.message}", Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    requireContext(),
+                    "Registrasi gagal: ${exception.message}",
+                    Toast.LENGTH_LONG
+                ).show()
             }
         }
 
         // Observe login result (for auto-login after registration)
         viewModel.loginResult.observe(viewLifecycleOwner) { result ->
             result.onSuccess { loginResponse ->
-                Toast.makeText(requireContext(), "Login berhasil!", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(requireContext(), "Login berhasil!", Toast.LENGTH_SHORT).show()
+
+                if (loginResponse.data.user.emailVerifiedAt == null) {
+                    Toast.makeText(
+                        requireContext(),
+                        "Silakan verifikasi email Anda terlebih dahulu.",
+                        Toast.LENGTH_LONG
+                    ).show()
+                    // Navigate to VerifyEmailFragment
+                    parentFragmentManager.beginTransaction()
+                        .replace(
+                            (activity as AuthActivity).findViewById<View>(com.triosalak.gymmanagement.R.id.auth_container).id,
+                            VerifyEmailFragment()
+                        )
+                        .addToBackStack(null)
+                        .commit()
+                    return@onSuccess
+                }
+
                 // Navigate to main activity or dashboard
                 (activity as? AuthActivity)?.navigateToMain()
             }.onFailure { exception ->
-                Toast.makeText(requireContext(), "Auto-login gagal: ${exception.message}", Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    requireContext(),
+                    "Auto-login gagal: ${exception.message}",
+                    Toast.LENGTH_LONG
+                ).show()
                 // Navigate to login fragment instead
                 (activity as? AuthActivity)?.navigateToLogin()
             }
@@ -66,8 +92,12 @@ class RegisterFragment : Fragment() {
             val passwordConfirmation = binding.etRegisterPasswordConfirmation.text.toString().trim()
             val name = binding.etRegisterName.text.toString().trim()
 
-            if(password != passwordConfirmation) {
-                Toast.makeText(requireContext(), "Password dan konfirmasi password tidak sesuai", Toast.LENGTH_SHORT).show()
+            if (password != passwordConfirmation) {
+                Toast.makeText(
+                    requireContext(),
+                    "Password dan konfirmasi password tidak sesuai",
+                    Toast.LENGTH_SHORT
+                ).show()
                 return@setOnClickListener
             }
 

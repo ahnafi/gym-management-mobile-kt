@@ -45,8 +45,27 @@ class LoginFragment : Fragment() {
             result.fold(
                 onSuccess = {
                     Toast.makeText(requireContext(), "Login berhasil!", Toast.LENGTH_SHORT).show()
-                    startActivity(Intent(requireContext(), MainActivity::class.java))
-                    requireActivity().finish()
+
+                    if (it.data.user.emailVerifiedAt == null) {
+                        Toast.makeText(
+                            requireContext(),
+                            "Silakan verifikasi email Anda terlebih dahulu.",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        // Navigate to VerifyEmailFragment
+                        parentFragmentManager.beginTransaction()
+                            .replace(
+                                (activity as AuthActivity).findViewById<View>(com.triosalak.gymmanagement.R.id.auth_container).id,
+                                VerifyEmailFragment()
+                            )
+                            .addToBackStack(null)
+                            .commit()
+                        return@fold
+                    } else {
+                        startActivity(Intent(requireContext(), MainActivity::class.java))
+                        requireActivity().finish()
+                    }
+
                 },
                 onFailure = { error ->
                     Toast.makeText(
@@ -64,13 +83,18 @@ class LoginFragment : Fragment() {
             val password = binding.password.text.toString().trim()
 
             if (email.isEmpty() || password.isEmpty()) {
-                Toast.makeText(requireContext(), "Email dan password harus diisi", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    "Email dan password harus diisi",
+                    Toast.LENGTH_SHORT
+                ).show()
                 return@setOnClickListener
             }
 
             // Validasi email sederhana
             if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                Toast.makeText(requireContext(), "Format email tidak valid", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Format email tidak valid", Toast.LENGTH_SHORT)
+                    .show()
                 return@setOnClickListener
             }
 

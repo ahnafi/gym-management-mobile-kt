@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.triosalak.gymmanagement.data.model.request.UpdateProfileRequest
+import com.triosalak.gymmanagement.data.model.entity.User
 import com.triosalak.gymmanagement.data.network.SulthonApi
 import com.triosalak.gymmanagement.utils.MultipartUtils
 import com.triosalak.gymmanagement.utils.SessionManager
@@ -27,6 +28,9 @@ class ProfileViewModel(
 
     private val _updateResult = MutableStateFlow<UpdateResult?>(null)
     val updateResult: StateFlow<UpdateResult?> = _updateResult
+
+    private val _currentUserResult = MutableStateFlow<CurrentUserResult?>(null)
+    val currentUserResult: StateFlow<CurrentUserResult?> = _currentUserResult
 
     fun updateProfile(name: String?, phone: String?, bio: String?) {
         viewModelScope.launch {
@@ -279,5 +283,37 @@ class ProfileViewModel(
     sealed class UpdateResult {
         data class Success(val message: String) : UpdateResult()
         data class Error(val message: String) : UpdateResult()
+    }
+
+    sealed class CurrentUserResult {
+        data class Success(val user: User) : CurrentUserResult()
+        data class Error(val message: String) : CurrentUserResult()
+    }
+
+    fun currentUser() {
+        // refresh current user from api and save to session
+        viewModelScope.launch {
+            try {
+                _currentUserResult.value = null
+
+                val response = api.getCurrentUser()
+
+                if (response.isSuccessful && response.body() != null) {
+                    val userResponse = response.body()!!
+                    Log.d(TAG, "Fetched current user from API: ${userResponse.data}")
+                    sessionManager.saveCurrentUser(userResponse.data)
+                    _currentUserResult.value = CurrentUserResult.Success(userResponse.data)
+                } else {
+                    val errorMsg = "Failed to fetch current user: ${response.message()}"
+                    Log.e(TAG, errorMsg)
+                    _currentUserResult.value = CurrentUserResult.Error(errorMsg)
+                }
+
+            } catch (e: Exception) {
+                val errorMsg = "Exception during fetching current user: ${e.message}"
+                Log.e(TAG, "❌ $errorMsg", e)
+                _currentUserResult.value = CurrentUserResult.Error(errorMsg)
+            }
+        }
     }
 }

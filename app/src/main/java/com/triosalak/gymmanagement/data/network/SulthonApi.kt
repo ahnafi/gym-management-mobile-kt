@@ -1,12 +1,14 @@
 package com.triosalak.gymmanagement.data.network
 
-import androidx.datastore.preferences.protobuf.Method
-import com.google.gson.annotations.SerializedName
+import com.triosalak.gymmanagement.data.model.request.ChangePasswordRequest
 import com.triosalak.gymmanagement.data.model.request.LoginRequest
 import com.triosalak.gymmanagement.data.model.request.RegisterRequest
 import com.triosalak.gymmanagement.data.model.request.UpdateProfileRequest
+import com.triosalak.gymmanagement.data.model.response.ChangePasswordResponse
+import com.triosalak.gymmanagement.data.model.response.GetCurrentUserResponse
 import com.triosalak.gymmanagement.data.model.response.LoginResponse
 import com.triosalak.gymmanagement.data.model.response.RegisterResponse
+import com.triosalak.gymmanagement.data.model.response.ResendVerificationEmailResponse
 import com.triosalak.gymmanagement.data.model.response.UpdateProfileResponse
 import okhttp3.MultipartBody
 import retrofit2.Response
@@ -31,10 +33,8 @@ interface SulthonApi {
     @POST("logout")
     suspend fun logout()
 
-    @GET("users")
-    suspend fun getUsers(
-        //
-    )
+    @GET("profile")
+    suspend fun getCurrentUser(): Response<GetCurrentUserResponse>
 
     @PUT("profile")
     suspend fun updateProfile(
@@ -47,4 +47,12 @@ interface SulthonApi {
         @Part profileImage: MultipartBody.Part,
         @Part("_method") method: okhttp3.RequestBody
     ): Response<UpdateProfileResponse>
+
+    @POST("resend-verification")
+    suspend fun resendVerificationEmail(): Response<ResendVerificationEmailResponse>
+
+    @POST("change-password")
+    suspend fun changePassword(
+        @Body changePasswordRequest: ChangePasswordRequest
+    ): Response<ChangePasswordResponse>
 }

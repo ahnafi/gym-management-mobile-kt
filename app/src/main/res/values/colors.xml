@@ -50,6 +50,14 @@
     <!-- Success colors for membership status -->
     <color name="md_theme_success">#146C2E</color>
     <color name="md_theme_on_success">#FFFFFF</color>
-    <color name="md_theme_success_container">#A7F432</color>
-    <color name="md_theme_on_success_container">#002106</color>
+    <color name="md_theme_success_container">#B7F397</color>
+    <color name="md_theme_on_success_container">#002204</color>
+
+    <!-- Email verification page colors -->
+    <color name="primary_text">#1C1B1F</color>
+    <color name="secondary_text">#49454F</color>
+    <color name="hint_text">#79747E</color>
+    <color name="primary_button">#1976D2</color>
+    <color name="primary_button_light">#E3F2FD</color>
+
 </resources>

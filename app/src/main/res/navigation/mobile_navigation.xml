@@ -28,4 +28,13 @@
         android:name="com.triosalak.gymmanagement.ui.profile.ProfileFragment"
         android:label="Profile"
         tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/verifyEmailFragment"
+        android:name="com.triosalak.gymmanagement.ui.auth.VerifyEmailFragment"
+        android:label="VerifyEmailFragment"
+        tools:layout="@layout/fragment_verify_email">
+        <action
+            android:id="@+id/action_verifyEmailFragment_to_navigation_home"
+            app:destination="@id/navigation_home" />
+    </fragment>
 </navigation>

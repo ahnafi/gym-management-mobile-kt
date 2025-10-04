@@ -1,6 +1,7 @@
 package com.triosalak.gymmanagement.viewmodel
 
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -51,7 +52,8 @@ class AuthViewModel(
                         _loginResult.value = Result.success(loginResponse)
                     } else {
                         Log.e("LOGIN_FAILED", "Response body is null")
-                        _loginResult.value = Result.failure(Exception("Login failed: Empty response"))
+                        _loginResult.value =
+                            Result.failure(Exception("Login failed: Empty response"))
                     }
                 } else {
                     val errorBody = response.errorBody()?.string()
@@ -102,6 +104,26 @@ class AuthViewModel(
             } catch (e: Exception) {
                 Log.e("NETWORK_ERROR", "Error: ${e.localizedMessage}", e)
                 _registerResult.value = Result.failure(e)
+            }
+        }
+    }
+
+    fun resendVerificationEmail() {
+        viewModelScope.launch {
+            try {
+                val response = api.resendVerificationEmail()
+                if (response.isSuccessful) {
+                    Log.d("RESEND_VERIFICATION", "Verification email resent successfully.")
+                } else {
+                    Log.e(
+                        "RESEND_VERIFICATION_FAILED",
+                        "Error: ${response.code()} - ${response.message()}"
+                    )
+
+                    throw Exception("Resend verification failed: ${response.message()}")
+                }
+            } catch (e: Exception) {
+                Log.e("NETWORK_ERROR", "Error: ${e.localizedMessage}", e)
             }
         }
     }
