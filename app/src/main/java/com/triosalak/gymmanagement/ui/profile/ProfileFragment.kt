@@ -1,6 +1,7 @@
 package com.triosalak.gymmanagement.ui.profile
 
 import android.app.Dialog
+import android.content.Context
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
@@ -66,7 +67,11 @@ class ProfileFragment : Fragment() {
             openImagePicker()
         } else {
             Log.w(TAG, "❌ Permission denied by user")
-            Toast.makeText(requireContext(), "Permission diperlukan untuk memilih gambar", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                requireContext(),
+                "Permission diperlukan untuk memilih gambar",
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 
@@ -124,6 +129,14 @@ class ProfileFragment : Fragment() {
             showEditProfileDialog()
         }
 
+        binding.btnChangePassword.setOnClickListener {
+            Toast.makeText(
+                requireContext(),
+                "Fitur ganti password belum tersedia",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+
         Log.d(TAG, "Button click listeners setup completed")
     }
 
@@ -140,7 +153,9 @@ class ProfileFragment : Fragment() {
 
             // Load current user data into dialog
             val currentUser = sessionManager.getCurrentUserSync()
-            Log.d(TAG, "Current user data: ${currentUser?.let { "ID:${it.id}, Name:${it.name}, Phone:${it.phone}, Bio:${it.profileBio}" } ?: "null"}")
+            Log.d(
+                TAG,
+                "Current user data: ${currentUser?.let { "ID:${it.id}, Name:${it.name}, Phone:${it.phone}, Bio:${it.profileBio}" } ?: "null"}")
 
             currentUser?.let { user ->
                 editProfileBinding?.apply {
@@ -148,7 +163,10 @@ class ProfileFragment : Fragment() {
                     etName.setText(user.name)
                     etPhone.setText(user.phone)
                     etBio.setText(user.profileBio)
-                    Log.d(TAG, "Text fields populated - Name:'${user.name}', Phone:'${user.phone}', Bio length:${user.profileBio?.length ?: 0}")
+                    Log.d(
+                        TAG,
+                        "Text fields populated - Name:'${user.name}', Phone:'${user.phone}', Bio length:${user.profileBio?.length ?: 0}"
+                    )
 
                     // Load profile image with error handling
                     try {
@@ -183,7 +201,11 @@ class ProfileFragment : Fragment() {
 
         } catch (e: Exception) {
             Log.e(TAG, "❌ Error showing edit profile dialog: ${e.message}", e)
-            Toast.makeText(requireContext(), "Error membuka dialog edit profile", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                requireContext(),
+                "Error membuka dialog edit profile",
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 
@@ -216,19 +238,27 @@ class ProfileFragment : Fragment() {
     private fun checkPermissionAndOpenImagePicker() {
         Log.d(TAG, "=== Checking Permissions for Image Picker ===")
 
-        val permission = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
-            android.Manifest.permission.READ_MEDIA_IMAGES
-        } else {
-            android.Manifest.permission.READ_EXTERNAL_STORAGE
-        }
+        val permission =
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+                android.Manifest.permission.READ_MEDIA_IMAGES
+            } else {
+                android.Manifest.permission.READ_EXTERNAL_STORAGE
+            }
 
-        Log.d(TAG, "Required permission: $permission (Android SDK: ${android.os.Build.VERSION.SDK_INT})")
+        Log.d(
+            TAG,
+            "Required permission: $permission (Android SDK: ${android.os.Build.VERSION.SDK_INT})"
+        )
 
         when {
-            ContextCompat.checkSelfPermission(requireContext(), permission) == PackageManager.PERMISSION_GRANTED -> {
+            ContextCompat.checkSelfPermission(
+                requireContext(),
+                permission
+            ) == PackageManager.PERMISSION_GRANTED -> {
                 Log.i(TAG, "✅ Permission already granted, opening image picker")
                 openImagePicker()
             }
+
             else -> {
                 Log.i(TAG, "🔒 Permission not granted, requesting permission")
                 permissionLauncher.launch(permission)
@@ -323,6 +353,7 @@ class ProfileFragment : Fragment() {
                             // Force refresh user data display
                             refreshUserDisplay()
                         }
+
                         is ProfileViewModel.UpdateResult.Error -> {
                             Log.e(TAG, "❌ Profile update ERROR: ${it.message}")
                             Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
@@ -343,7 +374,10 @@ class ProfileFragment : Fragment() {
         val currentUser = sessionManager.getCurrentUserSync()
         currentUser?.let { user ->
             Log.i(TAG, "Refreshing UI with updated user data")
-            Log.d(TAG, "Updated data: ID:${user.id}, Name:${user.name}, Email:${user.email}, Phone:${user.phone}")
+            Log.d(
+                TAG,
+                "Updated data: ID:${user.id}, Name:${user.name}, Email:${user.email}, Phone:${user.phone}"
+            )
 
             binding.apply {
                 tvUserName.text = user.name ?: "Nama tidak tersedia"
@@ -392,15 +426,23 @@ class ProfileFragment : Fragment() {
 
                 Log.i(TAG, "Navigating to AuthActivity...")
                 // Navigate back to AuthActivity
-                val intent = android.content.Intent(requireContext(), com.triosalak.gymmanagement.AuthActivity::class.java)
-                intent.flags = android.content.Intent.FLAG_ACTIVITY_NEW_TASK or android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK
+                val intent = android.content.Intent(
+                    requireContext(),
+                    com.triosalak.gymmanagement.AuthActivity::class.java
+                )
+                intent.flags =
+                    android.content.Intent.FLAG_ACTIVITY_NEW_TASK or android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK
                 startActivity(intent)
                 requireActivity().finish()
 
                 Log.i(TAG, "✅ Logout completed successfully")
             } catch (e: Exception) {
                 Log.e(TAG, "❌ Error during logout: ${e.message}", e)
-                Toast.makeText(requireContext(), "Error saat logout: ${e.message}", Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    requireContext(),
+                    "Error saat logout: ${e.message}",
+                    Toast.LENGTH_LONG
+                ).show()
             }
         }
     }
@@ -432,7 +474,10 @@ class ProfileFragment : Fragment() {
                         Log.d(TAG, "USER_DATA - Role: ${it.role}")
                         Log.d(TAG, "USER_DATA - Membership: ${it.membershipStatus}")
                         Log.d(TAG, "USER_DATA - Created: ${it.createdAt}")
-                        Log.d(TAG, "USER_DATA - Profile image: ${Constants.STORAGE_URL}${it.profileImage}")
+                        Log.d(
+                            TAG,
+                            "USER_DATA - Profile image: ${Constants.STORAGE_URL}${it.profileImage}"
+                        )
                         Log.d(TAG, "USER_DATA - Email verified: ${it.emailVerifiedAt}")
                     }
                 } ?: run {
