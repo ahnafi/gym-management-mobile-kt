@@ -15,6 +15,9 @@ class AuthInterceptor(private val sessionManager: SessionManager) : Interceptor 
             requestBuilder.addHeader("Authorization", "Bearer $it")
         }
 
+        requestBuilder.addHeader("Content-Type", "application/json")
+        requestBuilder.addHeader("Accept", "application/json")
+
         return chain.proceed(requestBuilder.build())
     }
 }
