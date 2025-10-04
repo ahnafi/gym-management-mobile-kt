@@ -25,6 +25,7 @@ import com.triosalak.gymmanagement.utils.SessionManager
 import com.triosalak.gymmanagement.viewmodel.ProfileViewModel
 import com.triosalak.gymmanagement.data.network.RetrofitInstance
 import kotlinx.coroutines.launch
+import androidx.navigation.fragment.findNavController
 
 class ProfileFragment : Fragment() {
 
@@ -130,11 +131,7 @@ class ProfileFragment : Fragment() {
         }
 
         binding.btnChangePassword.setOnClickListener {
-            Toast.makeText(
-                requireContext(),
-                "Fitur ganti password belum tersedia",
-                Toast.LENGTH_SHORT
-            ).show()
+            findNavController().navigate(R.id.action_navigation_profile_to_changePasswordFragment)
         }
 
         Log.d(TAG, "Button click listeners setup completed")

@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.triosalak.gymmanagement.data.model.request.UpdateProfileRequest
 import com.triosalak.gymmanagement.data.model.entity.User
+import com.triosalak.gymmanagement.data.model.request.ChangePasswordRequest
 import com.triosalak.gymmanagement.data.network.SulthonApi
 import com.triosalak.gymmanagement.utils.MultipartUtils
 import com.triosalak.gymmanagement.utils.SessionManager
@@ -316,4 +317,43 @@ class ProfileViewModel(
             }
         }
     }
+
+
+    fun changePassword(
+        currentPassword: String,
+        newPassword: String,
+        newPasswordConfirmation: String
+    ) {
+        viewModelScope.launch {
+            try {
+                _isLoading.value = true
+                _updateResult.value = null
+
+                val request = ChangePasswordRequest(
+                    currentPassword,
+                    newPassword,
+                    newPasswordConfirmation
+                )
+
+                Log.d(TAG, "Attempting to change password...")
+                val response = api.changePassword(request)
+
+                if (response.isSuccessful && response.body() != null) {
+                    val changePasswordResponse = response.body()!!
+                    Log.d(TAG, "Password changed successfully: ${changePasswordResponse.message}")
+                    _updateResult.value = UpdateResult.Success("Password berhasil diubah")
+                } else {
+                    val errorMessage = response.errorBody()?.string() ?: response.message()
+                    Log.e(TAG, "Change password failed: ${response.code()} - $errorMessage")
+                    _updateResult.value = UpdateResult.Error("Gagal mengubah password: $errorMessage")
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "Network error during password change: ${e.localizedMessage}", e)
+                _updateResult.value = UpdateResult.Error("Terjadi kesalahan jaringan: ${e.localizedMessage}")
+            } finally {
+                _isLoading.value = false
+            }
+        }
+    }
+
 }
