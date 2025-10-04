@@ -3,18 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
-
-    <fragment
-        android:id="@+id/navigation_home"
-        android:name="com.triosalak.gymmanagement.ui.home.HomeFragment"
-        android:label="@string/title_kelas"
-        tools:layout="@layout/fragment_home" />
+    app:startDestination="@+id/navigation_dashboard">
 
     <fragment
         android:id="@+id/navigation_dashboard"
         android:name="com.triosalak.gymmanagement.ui.dashboard.DashboardFragment"
         android:label="@string/title_dashboard"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/navigation_kelas"
+        android:name="com.triosalak.gymmanagement.ui.kelas.ClassFragment"
+        android:label="@string/title_kelas"
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment

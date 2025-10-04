@@ -13,7 +13,6 @@
     <color name="mybg">#FFE8E4</color>
     <color name="myblack">#1D1C23</color>
     <color name="myshadow">#3F1D1C23</color>
-</resources>
 
     <!-- Material 3 Color Tokens -->
     <color name="md_theme_primary">#6750A4</color>
