@@ -1,4 +1,4 @@
-package com.triosalak.gymmanagement.ui.kelas
+package com.triosalak.gymmanagement.ui.gymclass
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

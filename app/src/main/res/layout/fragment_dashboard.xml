@@ -40,7 +40,7 @@
                         android:id="@+id/text_dashboard"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Selamat Datang, Syahrial"
+                        android:text="Selamat Datang, User!"
                         android:textStyle="bold"
                         android:textSize="18sp"/>
 
@@ -96,6 +96,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:id="@+id/tv_visits_this_month"
                             android:text="0"
                             android:textStyle="bold"
                             android:textSize="18sp" />
@@ -137,6 +138,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:id="@+id/tv_total_visits"
                             android:text="0"
                             android:textStyle="bold"
                             android:textSize="18sp" />
@@ -174,6 +176,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:id="@+id/tv_current_streak"
                             android:text="0"
                             android:textStyle="bold"
                             android:textSize="18sp" />
@@ -207,6 +210,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:id="@+id/tv_average_visits_per_week"
                             android:text="0"
                             android:textStyle="bold"
                             android:textSize="18sp" />

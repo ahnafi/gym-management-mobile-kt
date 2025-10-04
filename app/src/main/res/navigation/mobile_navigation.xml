@@ -13,7 +13,7 @@
 
     <fragment
         android:id="@+id/navigation_kelas"
-        android:name="com.triosalak.gymmanagement.ui.kelas.ClassFragment"
+        android:name="com.triosalak.gymmanagement.ui.gymclass.ClassFragment"
         android:label="@string/title_kelas"
         tools:layout="@layout/fragment_dashboard" />
 

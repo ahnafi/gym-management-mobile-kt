@@ -6,6 +6,7 @@ import com.triosalak.gymmanagement.data.model.request.RegisterRequest
 import com.triosalak.gymmanagement.data.model.request.UpdateProfileRequest
 import com.triosalak.gymmanagement.data.model.response.ChangePasswordResponse
 import com.triosalak.gymmanagement.data.model.response.GetCurrentUserResponse
+import com.triosalak.gymmanagement.data.model.response.GetMyStatisticResponse
 import com.triosalak.gymmanagement.data.model.response.LoginResponse
 import com.triosalak.gymmanagement.data.model.response.RegisterResponse
 import com.triosalak.gymmanagement.data.model.response.ResendVerificationEmailResponse
@@ -55,4 +56,7 @@ interface SulthonApi {
     suspend fun changePassword(
         @Body changePasswordRequest: ChangePasswordRequest
     ): Response<ChangePasswordResponse>
+
+    @GET("gym-visits/statistics/my-stats")
+    suspend fun getMyStatistic(): Response<GetMyStatisticResponse>
 }
