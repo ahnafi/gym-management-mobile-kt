@@ -4,7 +4,9 @@ import com.triosalak.gymmanagement.data.model.request.ChangePasswordRequest
 import com.triosalak.gymmanagement.data.model.request.LoginRequest
 import com.triosalak.gymmanagement.data.model.request.RegisterRequest
 import com.triosalak.gymmanagement.data.model.request.UpdateProfileRequest
+import com.triosalak.gymmanagement.data.model.request.InitiateMembershipPaymentRequest
 import com.triosalak.gymmanagement.data.model.response.ChangePasswordResponse
+import com.triosalak.gymmanagement.data.model.response.InitiateMembershipPaymentResponse
 import com.triosalak.gymmanagement.data.model.response.GetCurrentUserResponse
 import com.triosalak.gymmanagement.data.model.response.GetGymClassesResponse
 import com.triosalak.gymmanagement.data.model.response.GetMyStatisticResponse
@@ -91,4 +93,9 @@ interface SulthonApi {
     suspend fun getTransactionDetail(
         @retrofit2.http.Path("id") transactionId: Int
     ): Response<GetTransactionsResponse>
+
+    @POST("payments/membership")
+    suspend fun initiateMembershipPayment(
+        @Body initiateMembershipPaymentRequest: InitiateMembershipPaymentRequest
+    ): Response<InitiateMembershipPaymentResponse>
 }
