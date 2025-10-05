@@ -19,9 +19,13 @@
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="com.triosalak.gymmanagement.ui.notifications.NotificationsFragment"
+        android:name="com.triosalak.gymmanagement.ui.membershippackages.MembershipPackagesFragment"
         android:label="@string/title_membership"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/fragment_membership_packages">
+        <action
+            android:id="@+id/action_membershipPackages_to_membershipPackageDetail"
+            app:destination="@id/membershipPackageDetailFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_profile"
@@ -44,5 +48,15 @@
         <action
             android:id="@+id/action_changePasswordFragment_to_navigation_profile"
             app:destination="@id/navigation_profile" />
+    </fragment>
+    
+    <fragment
+        android:id="@+id/membershipPackageDetailFragment"
+        android:name="com.triosalak.gymmanagement.ui.membershippackages.MembershipPackageDetailFragment"
+        android:label="Package Detail"
+        tools:layout="@layout/fragment_membership_package_detail">
+        <argument
+            android:name="packageId"
+            app:argType="integer" />
     </fragment>
 </navigation>

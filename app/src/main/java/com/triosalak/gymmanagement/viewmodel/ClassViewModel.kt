@@ -1,38 +1,54 @@
 package com.triosalak.gymmanagement.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.triosalak.gymmanagement.data.model.entity.MyStatistic
-import com.triosalak.gymmanagement.data.model.response.GetMyStatisticResponse
-import com.triosalak.gymmanagement.data.model.response.LoginResponse
+import com.triosalak.gymmanagement.data.model.entity.GymClass
 import com.triosalak.gymmanagement.data.network.SulthonApi
 import kotlinx.coroutines.launch
 
 class ClassViewModel(private val api: SulthonApi) : ViewModel() {
 
-    private val _myStatistic = MutableLiveData<Result<GetMyStatisticResponse>>()
-    val myStatistic: LiveData<Result<GetMyStatisticResponse>> = _myStatistic
+    private val _gymClasses = MutableLiveData<List<GymClass>>(emptyList())
+    val gymClasses: LiveData<List<GymClass>> get() = _gymClasses
 
-    public fun getStatistic() {
+    private var currentPage = 1
+    private var lastPage = 1
+    private var isLoading = false
+
+    fun getGymClass(page: Int = 1, append: Boolean = false) {
+        if (isLoading) return
+        isLoading = true
+
         viewModelScope.launch {
-            val response = api.getMyStatistic()
+            try {
+                val response = api.getGymClasses(page)
+                if (response.isSuccessful) {
+                    val body = response.body()?.data
+                    body?.let {
+                        currentPage = it.currentPage
+                        lastPage = it.lastPage
 
-            if (response.isSuccessful) {
-                val statisticResponse = response.body()
-                if (statisticResponse != null) {
-                    _myStatistic.value = Result.success(statisticResponse)
-                } else {
-                    _myStatistic.value =
-                        Result.failure(Exception("Failed to fetch statistics: Empty response"))
+                        val newList = if (append) {
+                            val oldList = _gymClasses.value ?: emptyList()
+                            oldList + it.classes
+                        } else {
+                            it.classes
+                        }
+
+                        _gymClasses.postValue(newList)
+                    }
                 }
-            } else {
-                val errorBody = response.errorBody()?.string()
-                _myStatistic.value =
-                    Result.failure(Exception("Failed to fetch statistics: $errorBody"))
+            } catch (e: Exception) {
+                Log.e("ClassViewModel", "Error: ${e.message}")
+            } finally {
+                isLoading = false
             }
-
         }
     }
+
+    fun canLoadMore(): Boolean = currentPage < lastPage
+    fun getNextPage(): Int = currentPage + 1
 }

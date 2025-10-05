@@ -1,10 +1,10 @@
 package com.triosalak.gymmanagement.ui.gymclass
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.triosalak.gymmanagement.R
 
 // TODO: Rename parameter arguments, choose names that match

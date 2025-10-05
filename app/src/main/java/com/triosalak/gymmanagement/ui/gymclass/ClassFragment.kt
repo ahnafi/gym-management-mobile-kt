@@ -21,6 +21,8 @@ class ClassFragment : Fragment() {
     private lateinit var classViewModel: ClassViewModel
     private lateinit var sessionManager: SessionManager
 
+    private lateinit var adapter: ClassAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -36,28 +38,40 @@ class ClassFragment : Fragment() {
         classViewModel = ClassViewModel(RetrofitInstance.getApiService(sessionManager))
 
         setupRecyclerView()
-        loadClasses()
+        setupObservers()
+        setupLoadMore()
+
+        // Load halaman pertama
+        classViewModel.getGymClass()
+    }
+
+    private fun setupLoadMore() {
+        binding.btnLoadMore.setOnClickListener {
+            val nextPage = classViewModel.getNextPage()
+            classViewModel.getGymClass(page = nextPage, append = true)
+        }
     }
 
     private fun setupRecyclerView() {
-        binding.recyclerViewKelas.layoutManager = GridLayoutManager(requireContext(), 2)
-    }
-
-    private fun loadClasses() {
-        // Contoh data dummy – nanti bisa diganti dari API
-        val dummyList = listOf(
-            GymClass(1, "Kelas menari membakar kalori", "Rp 150.000", "https://example.com/zumba.jpg"),
-            GymClass(2, "Fokus dan keseimbangan tubuh", "Rp 120.000", "https://example.com/yoga.jpg"),
-            GymClass(3, "Latihan intensitas tinggi", "Rp 200.000", "https://example.com/hiit.jpg"),
-            GymClass(4, "Gerakan ringan untuk fleksibilitas", "Rp 130.000", "https://example.com/pilates.jpg")
-        )
-
-        val adapter = ClassAdapter(dummyList) { gymClass ->
-            Toast.makeText(requireContext(), "Anda memilih: ${gymClass.name}", Toast.LENGTH_SHORT).show()
+        adapter = ClassAdapter(emptyList()) { gymClass ->
+            Toast.makeText(requireContext(), "Anda memilih: ${gymClass.name}", Toast.LENGTH_SHORT)
+                .show()
         }
 
+        binding.recyclerViewKelas.layoutManager = GridLayoutManager(requireContext(), 2)
         binding.recyclerViewKelas.adapter = adapter
     }
+
+    private fun setupObservers() {
+        classViewModel.gymClasses.observe(viewLifecycleOwner) { list ->
+            adapter.updateData(list)
+
+            // jika halaman terakhir, sembunyikan tombol
+            binding.btnLoadMore.visibility =
+                if (classViewModel.canLoadMore()) View.VISIBLE else View.GONE
+        }
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
