@@ -12,19 +12,29 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/navigation_kelas"
+        android:id="@+id/navigation_class"
         android:name="com.triosalak.gymmanagement.ui.gymclass.ClassFragment"
-        android:label="@string/title_kelas"
+        android:label="@string/title_class"
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
+        android:id="@+id/navigation_membership"
         android:name="com.triosalak.gymmanagement.ui.membershippackages.MembershipPackagesFragment"
         android:label="@string/title_membership"
         tools:layout="@layout/fragment_membership_packages">
         <action
             android:id="@+id/action_membershipPackages_to_membershipPackageDetail"
             app:destination="@id/membershipPackageDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_payments"
+        android:name="com.triosalak.gymmanagement.ui.transactions.TransactionsFragment"
+        android:label="@string/title_payments"
+        tools:layout="@layout/fragment_transactions">
+        <action
+            android:id="@+id/action_transactions_to_transactionDetail"
+            app:destination="@id/transactionDetailFragment" />
     </fragment>
 
     <fragment
@@ -57,6 +67,16 @@
         tools:layout="@layout/fragment_membership_package_detail">
         <argument
             android:name="packageId"
+            app:argType="integer" />
+    </fragment>
+    
+    <fragment
+        android:id="@+id/transactionDetailFragment"
+        android:name="com.triosalak.gymmanagement.ui.transactions.TransactionDetailFragment"
+        android:label="Transaction Detail"
+        tools:layout="@layout/fragment_transaction_detail">
+        <argument
+            android:name="transactionId"
             app:argType="integer" />
     </fragment>
 </navigation>

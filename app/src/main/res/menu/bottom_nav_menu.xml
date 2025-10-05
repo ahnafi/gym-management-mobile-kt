@@ -5,17 +5,18 @@
         android:id="@+id/navigation_dashboard"
         android:icon="@drawable/ic_home_black_24dp"
         android:title="@string/title_dashboard"/>
-
     <item
-        android:id="@+id/navigation_kelas"
+        android:id="@+id/navigation_membership"
+        android:icon="@drawable/ic_membership"
+        android:title="@string/title_membership" /> 
+    <item
+        android:id="@+id/navigation_class"
         android:icon="@drawable/exercise_24dp"
-        android:title="@string/title_kelas" />
-
+        android:title="@string/title_class" />
     <item
-        android:id="@+id/navigation_notifications"
+        android:id="@+id/navigation_payments"
         android:icon="@drawable/credit_card_24dp"
-        android:title="@string/title_membership" />
-
+        android:title="@string/title_payments" />
     <item
         android:id="@+id/navigation_profile"
         android:icon="@android:drawable/ic_menu_myplaces"

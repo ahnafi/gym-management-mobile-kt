@@ -1,8 +1,9 @@
 <resources>
     <string name="app_name">Gym Management</string>
-    <string name="title_kelas">Kelas</string>
+    <string name="title_class">Kelas</string>
     <string name="title_dashboard">Beranda</string>
     <string name="title_membership">Membership</string>
+    <string name="title_payments">Pembayaran</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>

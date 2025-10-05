@@ -10,6 +10,7 @@ import com.triosalak.gymmanagement.data.model.response.GetGymClassesResponse
 import com.triosalak.gymmanagement.data.model.response.GetMyStatisticResponse
 import com.triosalak.gymmanagement.data.model.response.GetMembershipPackageResponse
 import com.triosalak.gymmanagement.data.model.response.GetMembershipPackagesResponse
+import com.triosalak.gymmanagement.data.model.response.GetTransactionsResponse
 import com.triosalak.gymmanagement.data.model.response.LoginResponse
 import com.triosalak.gymmanagement.data.model.response.RegisterResponse
 import com.triosalak.gymmanagement.data.model.response.ResendVerificationEmailResponse
@@ -78,4 +79,16 @@ interface SulthonApi {
         @retrofit2.http.Path("id") packageId: Int
     ): Response<GetMembershipPackageResponse>
 
+    @GET("payments/my-transactions")
+    suspend fun getTransactions(
+        @Query("page") page: Int = 1,
+        @Query("per_page") perPage: Int = 15,
+        @Query("payment_status") paymentStatus: String? = null,
+        @Query("purchasable_type") purchasableType: String? = null
+    ): Response<GetTransactionsResponse>
+
+    @GET("payments/transactions/{id}")
+    suspend fun getTransactionDetail(
+        @retrofit2.http.Path("id") transactionId: Int
+    ): Response<GetTransactionsResponse>
 }
