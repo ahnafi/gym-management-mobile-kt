@@ -143,6 +143,7 @@
 
             <!-- Cancel Button -->
             <com.google.android.material.button.MaterialButton
+                android:textColor="@color/myred"
                 android:id="@+id/btn_cancel"
                 android:layout_width="0dp"
                 android:layout_height="56dp"
@@ -153,6 +154,7 @@
 
             <!-- Save Button -->
             <com.google.android.material.button.MaterialButton
+                android:backgroundTint="@color/myred"
                 android:id="@+id/btn_save"
                 android:layout_width="0dp"
                 android:layout_height="56dp"

@@ -49,8 +49,6 @@ interface SulthonApi {
         @Part("_method") method: okhttp3.RequestBody
     ): Response<UpdateProfileResponse>
 
-    @GET("gym-classes")
-    suspend fun getGymClasses(): Response<>
 
     @POST("resend-verification")
     suspend fun resendVerificationEmail(): Response<ResendVerificationEmailResponse>
