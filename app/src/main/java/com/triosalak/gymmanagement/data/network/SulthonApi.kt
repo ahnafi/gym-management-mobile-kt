@@ -7,6 +7,8 @@ import com.triosalak.gymmanagement.data.model.request.UpdateProfileRequest
 import com.triosalak.gymmanagement.data.model.response.ChangePasswordResponse
 import com.triosalak.gymmanagement.data.model.response.GetCurrentUserResponse
 import com.triosalak.gymmanagement.data.model.response.GetMyStatisticResponse
+import com.triosalak.gymmanagement.data.model.response.GetMembershipPackageResponse
+import com.triosalak.gymmanagement.data.model.response.GetMembershipPackagesResponse
 import com.triosalak.gymmanagement.data.model.response.LoginResponse
 import com.triosalak.gymmanagement.data.model.response.RegisterResponse
 import com.triosalak.gymmanagement.data.model.response.ResendVerificationEmailResponse
@@ -59,4 +61,13 @@ interface SulthonApi {
 
     @GET("gym-visits/statistics/my-stats")
     suspend fun getMyStatistic(): Response<GetMyStatisticResponse>
+
+    @GET("membership/packages")
+    suspend fun getMembershipPackages(): Response<GetMembershipPackagesResponse>
+
+    @GET("membership/packages/{id}")
+    suspend fun getMembershipPackageDetail(
+        @retrofit2.http.Path("id") packageId: Int
+    ): Response<GetMembershipPackageResponse>
+
 }
