@@ -1,7 +1,6 @@
 package com.triosalak.gymmanagement.data.model.request
 
 import com.google.gson.annotations.SerializedName
-import com.triosalak.gymmanagement.utils.MultipartUtils
 import okhttp3.MultipartBody
 
 /*

@@ -1,19 +1,15 @@
 package com.triosalak.gymmanagement.ui.dashboard
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import com.triosalak.gymmanagement.data.network.RetrofitInstance
 import com.triosalak.gymmanagement.databinding.FragmentDashboardBinding
 import com.triosalak.gymmanagement.utils.SessionManager
 import com.triosalak.gymmanagement.viewmodel.DashboardViewModel
-import retrofit2.Retrofit
 
 class DashboardFragment : Fragment() {
 

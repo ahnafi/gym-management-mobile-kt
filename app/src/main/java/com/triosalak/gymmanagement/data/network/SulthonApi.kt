@@ -6,6 +6,7 @@ import com.triosalak.gymmanagement.data.model.request.RegisterRequest
 import com.triosalak.gymmanagement.data.model.request.UpdateProfileRequest
 import com.triosalak.gymmanagement.data.model.response.ChangePasswordResponse
 import com.triosalak.gymmanagement.data.model.response.GetCurrentUserResponse
+import com.triosalak.gymmanagement.data.model.response.GetGymClassesResponse
 import com.triosalak.gymmanagement.data.model.response.GetMyStatisticResponse
 import com.triosalak.gymmanagement.data.model.response.LoginResponse
 import com.triosalak.gymmanagement.data.model.response.RegisterResponse
@@ -19,6 +20,7 @@ import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Part
+import retrofit2.http.Query
 
 interface SulthonApi {
     @POST("login")
@@ -50,7 +52,10 @@ interface SulthonApi {
     ): Response<UpdateProfileResponse>
 
     @GET("gym-classes")
-    suspend fun getGymClasses(): Response<>
+    suspend fun getGymClasses(
+        @Query("page") page: Int,
+        @Query("per_page") perPage: Int = 6
+    ): Response<GetGymClassesResponse>
 
     @POST("resend-verification")
     suspend fun resendVerificationEmail(): Response<ResendVerificationEmailResponse>

@@ -3,158 +3,170 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
-    android:background="@android:color/white">
+    android:background="@android:color/white"
+    android:fillViewport="true">
 
     <LinearLayout
         android:id="@+id/layoutHeader"
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="0dp">
-    <LinearLayout
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:padding="16dp"
-        android:background="@color/mybg">
 
-
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            app:cardCornerRadius="16dp"
-            app:cardBackgroundColor="@color/myredlight"
-            app:cardElevation="0dp"
-            android:layout_marginBottom="16dp">
+            android:background="@color/mybg"
+            android:orientation="vertical"
+            android:padding="16dp">
 
-            <TextView
+
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Kelas Fitness Pilihan Anda"
-                android:textSize="12sp"
-                android:paddingHorizontal="12dp"
-                android:paddingVertical="6dp"/>
-        </com.google.android.material.card.MaterialCardView>
+                android:layout_gravity="center"
+                android:layout_marginBottom="16dp"
+                app:cardBackgroundColor="@color/myredlight"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="6dp"
+                    android:text="Kelas Fitness Pilihan Anda"
+                    android:textSize="12sp" />
+            </com.google.android.material.card.MaterialCardView>
 
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Kelas Gym"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:layout_marginTop="8dp"
-            android:textColor="@color/myblack"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Terbaik Untuk Anda"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:layout_marginTop="0dp"
-            android:textColor="@color/myred"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Bergabunglah dengan kelas-kelas fitness yang dipimpin oleh instruktur berpengalaman. Temukan kelas yang sesuai dengan level dan minat Anda."
-            android:textSize="12sp"
-            android:gravity="center"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:text="Kelas Gym"
+                android:textColor="@color/myblack"
+                android:textSize="22sp"
+                android:textStyle="bold" />
 
-<!--        Statistik-->
-        <LinearLayout
-            android:id="@+id/layoutStatistik"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="3"
-            android:padding="8dp"
-            android:background="@color/mybg">
-            <LinearLayout
-                android:layout_width="0dp"
+            <TextView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:layout_marginTop="0dp"
                 android:gravity="center"
-                android:layout_weight="1">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="10+"
-                    android:textSize="24sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/myred"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Pilihan Kelas"
-                    android:textSize="12sp"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="0dp"
+                android:text="Terbaik Untuk Anda"
+                android:textColor="@color/myred"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
                 android:gravity="center"
-                android:layout_weight="1">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="200+"
-                    android:textSize="24sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/myred"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Member Aktif"
-                    android:textSize="12sp"/>
-            </LinearLayout>
+                android:text="Bergabunglah dengan kelas-kelas fitness yang dipimpin oleh instruktur berpengalaman. Temukan kelas yang sesuai dengan level dan minat Anda."
+                android:textSize="12sp" />
+
+            <!--        Statistik-->
             <LinearLayout
-                android:layout_width="0dp"
+                android:id="@+id/layoutStatistik"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:layout_weight="1">
-                <TextView
-                    android:layout_width="wrap_content"
+                android:background="@color/mybg"
+                android:orientation="horizontal"
+                android:padding="8dp"
+                android:weightSum="3">
+
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="4.8"
-                    android:textSize="24sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/myred"/>
-                <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="10+"
+                        android:textColor="@color/myred"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Pilihan Kelas"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Rating"
-                    android:textSize="12sp"/>
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="200+"
+                        android:textColor="@color/myred"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Member Aktif"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="4.8"
+                        android:textColor="@color/myred"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Rating"
+                        android:textSize="12sp" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-        </LinearLayout>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Pilih Kelas Favorit Anda"
-            android:textSize="24sp"
-            android:textStyle="bold"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="8dp"
             android:gravity="center"
-            android:textColor="@color/myblack"/>
+            android:text="Pilih Kelas Favorit Anda"
+            android:textColor="@color/myblack"
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Dari Yoga HIIT dll"
-            android:textSize="12sp"
-            android:textStyle="bold"
             android:layout_marginTop="2dp"
             android:layout_marginBottom="8dp"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:text="Dari Yoga HIIT dll"
+            android:textSize="12sp"
+            android:textStyle="bold" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewKelas"
@@ -162,33 +174,47 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:clipToPadding="false"
-            android:paddingBottom="16dp"/>
+            android:paddingBottom="16dp" />
 
-            <LinearLayout
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/btn_load_more"
+                android:layout_gravity="center"
+                android:text="Lihat lebih banyak"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/holo_red_dark"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Siap Memulai Perjalanan Fitness Anda?"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:color/holo_red_dark"
-                android:padding="16dp"
-                android:orientation="vertical"
-                android:gravity="center">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Siap Memulai Perjalanan Fitness Anda?"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:textColor="@android:color/white"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Kontak kami untuk informasi lebih lanjut dan dapatkan promo terbaik."
-                    android:textColor="@android:color/white"
-                    android:gravity="center"
-                    android:layout_marginTop="4dp"/>
-            </LinearLayout>
+                android:layout_marginTop="4dp"
+                android:gravity="center"
+                android:text="Kontak kami untuk informasi lebih lanjut dan dapatkan promo terbaik."
+                android:textColor="@android:color/white" />
         </LinearLayout>
+    </LinearLayout>
 
 
 </ScrollView>
