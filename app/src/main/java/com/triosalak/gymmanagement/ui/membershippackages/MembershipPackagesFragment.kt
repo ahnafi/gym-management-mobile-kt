@@ -1,5 +1,6 @@
 package com.triosalak.gymmanagement.ui.membershippackages
 
+import HeaderAdapter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ConcatAdapter // <-- Perubahan: Import ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.triosalak.gymmanagement.R
 import com.triosalak.gymmanagement.data.model.entity.MembershipPackage
@@ -23,7 +25,11 @@ class MembershipPackagesFragment : Fragment() {
 
     private lateinit var membershipPackagesViewModel: MembershipPackagesViewModel
     private lateinit var sessionManager: SessionManager
+
+    // --- PERUBAHAN: Deklarasi untuk 3 adapter ---
     private lateinit var membershipPackageAdapter: MembershipPackageAdapter
+    private lateinit var headerAdapter: HeaderAdapter
+    private lateinit var concatAdapter: ConcatAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,21 +43,29 @@ class MembershipPackagesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Inisialisasi ViewModel tetap sama
         sessionManager = SessionManager(requireContext())
         membershipPackagesViewModel = MembershipPackagesViewModel(RetrofitInstance.getApiService(sessionManager))
 
+        // Panggil fungsi-fungsi utama
         setupRecyclerView()
         observeViewModel()
         loadData()
     }
 
     private fun setupRecyclerView() {
+        // 1. Inisialisasi kedua adapter secara terpisah
+        headerAdapter = HeaderAdapter()
         membershipPackageAdapter = MembershipPackageAdapter { membershipPackage ->
             onPackageSelected(membershipPackage)
         }
 
+        // 2. Gabungkan keduanya menggunakan ConcatAdapter
+        concatAdapter = ConcatAdapter(headerAdapter, membershipPackageAdapter)
+
+        // 3. Atur RecyclerView untuk menggunakan ConcatAdapter
         binding.rvMembershipPackages.apply {
-            adapter = membershipPackageAdapter
+            adapter = concatAdapter // Menggunakan adapter gabungan
             layoutManager = LinearLayoutManager(requireContext())
         }
     }
@@ -59,9 +73,12 @@ class MembershipPackagesFragment : Fragment() {
     private fun observeViewModel() {
         membershipPackagesViewModel.membershipPackages.observe(viewLifecycleOwner) { result ->
             result.onSuccess { membershipPackagesResponse ->
-                val packages = membershipPackagesResponse.data.data // Access nested data
+                val packages = membershipPackagesResponse.data.data
+
+                // Update hanya adapter paket, header tidak perlu diubah
                 membershipPackageAdapter.submitList(packages)
-                
+
+                // Logika untuk empty state sedikit berubah
                 if (packages.isEmpty()) {
                     showEmptyState(true)
                 } else {
@@ -69,11 +86,8 @@ class MembershipPackagesFragment : Fragment() {
                 }
             }.onFailure { exception ->
                 showEmptyState(true)
-                // Show more detailed error message
                 val errorMessage = exception.message ?: "Unknown error occurred"
                 Toast.makeText(requireContext(), "Error loading packages: $errorMessage", Toast.LENGTH_LONG).show()
-                
-                // Log the error for debugging
                 android.util.Log.e("MembershipPackages", "Failed to load packages", exception)
             }
         }
@@ -88,7 +102,7 @@ class MembershipPackagesFragment : Fragment() {
     }
 
     private fun onPackageSelected(membershipPackage: MembershipPackage) {
-        // Option 1: Using Navigation Component
+        // Logika navigasi tidak perlu diubah
         try {
             val packageId = membershipPackage.id ?: return
             val bundle = Bundle().apply {
@@ -96,19 +110,19 @@ class MembershipPackagesFragment : Fragment() {
             }
             findNavController().navigate(R.id.membershipPackageDetailFragment, bundle)
         } catch (e: Exception) {
-            // Option 2: Fallback to Fragment Transaction
             navigateToDetailWithFragmentTransaction(membershipPackage)
         }
     }
-    
+
     private fun navigateToDetailWithFragmentTransaction(membershipPackage: MembershipPackage) {
+        // Logika navigasi tidak perlu diubah
         val packageId = membershipPackage.id ?: return
         val detailFragment = MembershipPackageDetailFragment().apply {
             arguments = Bundle().apply {
                 putInt("packageId", packageId)
             }
         }
-        
+
         parentFragmentManager.beginTransaction()
             .replace(R.id.nav_host_fragment_activity_main, detailFragment)
             .addToBackStack(null)
@@ -116,8 +130,13 @@ class MembershipPackagesFragment : Fragment() {
     }
 
     private fun showEmptyState(show: Boolean) {
+        // PERUBAHAN: Saat empty state, RecyclerView tetap terlihat agar header-nya muncul
         binding.layoutEmptyState.visibility = if (show) View.VISIBLE else View.GONE
-        binding.rvMembershipPackages.visibility = if (show) View.GONE else View.VISIBLE
+
+        // Kosongkan data di adapter jika empty state ditampilkan
+        if (show) {
+            membershipPackageAdapter.submitList(emptyList())
+        }
     }
 
     override fun onDestroyView() {
