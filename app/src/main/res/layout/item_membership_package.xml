@@ -28,7 +28,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="16dp"
+            android:background="@color/mylight">
 
             <!-- Package Name -->
             <TextView
@@ -83,7 +84,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
-                    android:background="@color/myredlight"
+
                     android:paddingHorizontal="12dp"
                     android:paddingVertical="6dp">
 
