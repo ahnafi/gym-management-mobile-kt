@@ -1,7 +1,6 @@
 package com.triosalak.gymmanagement.ui.profile
 
 import android.app.Dialog
-import android.content.Context
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
@@ -15,17 +14,17 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import coil.load
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.triosalak.gymmanagement.R
+import com.triosalak.gymmanagement.data.network.RetrofitInstance
 import com.triosalak.gymmanagement.databinding.DialogEditProfileBinding
 import com.triosalak.gymmanagement.databinding.FragmentProfileBinding
 import com.triosalak.gymmanagement.utils.Constants
 import com.triosalak.gymmanagement.utils.SessionManager
 import com.triosalak.gymmanagement.viewmodel.ProfileViewModel
-import com.triosalak.gymmanagement.data.network.RetrofitInstance
 import kotlinx.coroutines.launch
-import androidx.navigation.fragment.findNavController
 
 class ProfileFragment : Fragment() {
 

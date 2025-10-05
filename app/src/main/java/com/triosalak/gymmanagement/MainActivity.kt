@@ -3,11 +3,11 @@ package com.triosalak.gymmanagement
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.triosalak.gymmanagement.databinding.ActivityMainBinding
 import com.triosalak.gymmanagement.utils.SessionManager
 import kotlinx.coroutines.flow.firstOrNull

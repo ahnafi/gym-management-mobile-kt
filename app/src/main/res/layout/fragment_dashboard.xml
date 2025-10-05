@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <!-- Konten scrollable -->
@@ -24,12 +25,18 @@
                 android:orientation="horizontal"
                 android:gravity="center_vertical">
 
-                <ImageView
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/iv_profile_picture"
+                    android:padding="2dp"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
-                    android:src="@drawable/calendar_month_24dp"
+                    android:background="@color/md_theme_surface_container_high"
+                    android:scaleType="centerCrop"
+                    app:shapeAppearanceOverlay="@style/CircleImageView"
+                    app:strokeColor="@color/md_theme_outline"
+                    app:strokeWidth="1dp"
                     android:layout_marginRight="12dp"
-                    android:scaleType="centerCrop"/>
+                    tools:src="@android:drawable/ic_menu_gallery" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -40,7 +47,6 @@
                         android:id="@+id/text_dashboard"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Selamat Datang, User!"
                         android:textStyle="bold"
                         android:textSize="18sp"/>
 
@@ -90,13 +96,13 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Visit Gym Bulan Ini"
+                            android:text="Total kunjungan"
                             android:textSize="14sp" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:id="@+id/tv_visits_this_month"
+                            android:id="@+id/tv_total_visits"
                             android:text="0"
                             android:textStyle="bold"
                             android:textSize="18sp" />
@@ -132,13 +138,13 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Gym Minggu Ini"
+                            android:text="Gym bulan ini"
                             android:textSize="14sp" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:id="@+id/tv_total_visits"
+                            android:id="@+id/tv_visits_this_month"
                             android:text="0"
                             android:textStyle="bold"
                             android:textSize="18sp" />
@@ -171,12 +177,12 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Kelas Bulan Ini"
+                            android:text="gym per minggu"
                             android:textSize="14sp" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:id="@+id/tv_current_streak"
+                            android:id="@+id/tv_average_visits_per_week"
                             android:text="0"
                             android:textStyle="bold"
                             android:textSize="18sp" />
@@ -205,12 +211,12 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Waktu rata-rata"
+                            android:text="Streak saat ini"
                             android:textSize="14sp" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:id="@+id/tv_average_visits_per_week"
+                            android:id="@+id/tv_current_streak"
                             android:text="0"
                             android:textStyle="bold"
                             android:textSize="18sp" />
@@ -342,13 +348,5 @@
 
         </LinearLayout>
     </ScrollView>
-
-    <!-- Bottom Navigation -->
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#FF0000"
-        app:menu="@menu/bottom_nav_menu"/>
 
 </LinearLayout>
