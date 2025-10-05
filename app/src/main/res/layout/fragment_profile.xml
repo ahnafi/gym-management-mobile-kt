@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:padding="24dp">
 
         <!-- Header Section -->
         <com.google.android.material.card.MaterialCardView
@@ -30,7 +30,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="24dp"
-                android:paddingVertical="32dp">
+                android:paddingVertical="32dp"
+                android:background="@color/mybg">
 
                 <!-- Profile Image Placeholder -->
                 <com.google.android.material.imageview.ShapeableImageView
@@ -100,7 +101,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="20dp">
+                android:padding="20dp"
+                android:background="@color/white">
 
                 <!-- Personal Information Section -->
                 <TextView
@@ -285,8 +287,11 @@
                     android:layout_marginBottom="8dp"
                     android:paddingHorizontal="24dp"
                     android:text="Edit Profile"
+                    android:textColor="@color/myred"
                     android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
-                    app:cornerRadius="12dp" />
+                    app:cornerRadius="12dp"
+                    app:strokeColor="@color/myred"
+                    />
 
                 <!-- Change Password Button -->
                 <com.google.android.material.button.MaterialButton
@@ -296,8 +301,10 @@
                     android:layout_height="48dp"
                     android:paddingHorizontal="24dp"
                     android:text="Ganti Password"
+                    android:textColor="@color/myred"
                     android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
-                    app:cornerRadius="12dp" />
+                    app:cornerRadius="12dp"
+                    app:strokeColor="@color/myred"  />
 
             </LinearLayout>
 
@@ -309,7 +316,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="0dp"
-            android:layout_marginBottom="52dp"
+            android:layout_marginBottom="0dp"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
