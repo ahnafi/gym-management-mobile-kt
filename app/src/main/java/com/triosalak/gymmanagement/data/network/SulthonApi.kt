@@ -15,6 +15,7 @@ import com.triosalak.gymmanagement.data.model.response.LoginResponse
 import com.triosalak.gymmanagement.data.model.response.RegisterResponse
 import com.triosalak.gymmanagement.data.model.response.ResendVerificationEmailResponse
 import com.triosalak.gymmanagement.data.model.response.UpdateProfileResponse
+import com.triosalak.gymmanagement.data.model.response.GetMyMembershipsResponse
 import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.Body
@@ -84,5 +85,8 @@ interface SulthonApi {
     suspend fun getMembershipPackageDetail(
         @retrofit2.http.Path("id") packageId: Int
     ): Response<GetMembershipPackageResponse>
+
+    @GET("membership/my-memberships")
+    suspend fun getMyMemberships(): Response<GetMyMembershipsResponse>
 
 }
