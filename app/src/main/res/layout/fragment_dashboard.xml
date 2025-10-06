@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <!-- Konten scrollable -->
@@ -23,20 +23,20 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/iv_profile_picture"
-                    android:padding="2dp"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
+                    android:layout_marginRight="12dp"
                     android:background="@color/md_theme_surface_container_high"
+                    android:padding="2dp"
                     android:scaleType="centerCrop"
                     app:shapeAppearanceOverlay="@style/CircleImageView"
                     app:strokeColor="@color/md_theme_outline"
                     app:strokeWidth="1dp"
-                    android:layout_marginRight="12dp"
                     tools:src="@android:drawable/ic_menu_gallery" />
 
                 <LinearLayout
@@ -48,14 +48,14 @@
                         android:id="@+id/text_dashboard"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textStyle="bold"
-                        android:textSize="18sp"/>
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Berikut adalah ringkasan aktivitas gym Anda"
-                        android:textSize="14sp"/>
+                        android:textSize="14sp" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -63,11 +63,11 @@
             <GridLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:columnCount="2"
                 android:layout_marginTop="16dp"
-                android:rowCount="2"
                 android:alignmentMode="alignMargins"
+                android:columnCount="2"
                 android:columnOrderPreserved="false"
+                android:rowCount="2"
                 android:useDefaultMargins="true">
 
                 <!-- Item 1 -->
@@ -75,17 +75,17 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
-                    android:orientation="horizontal"
+                    android:background="@drawable/box_background"
                     android:gravity="center_vertical"
-                    android:padding="12dp"
-                    android:background="@drawable/box_background">
+                    android:orientation="horizontal"
+                    android:padding="12dp">
 
                     <!-- Icon di kiri -->
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:src="@drawable/calendar_month_24dp"
-                        android:layout_marginEnd="12dp" />
+                        android:layout_marginEnd="12dp"
+                        android:src="@drawable/calendar_month_24dp" />
 
                     <!-- Teks di kanan -->
                     <LinearLayout
@@ -101,12 +101,12 @@
                             android:textSize="14sp" />
 
                         <TextView
+                            android:id="@+id/tv_total_visits"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:id="@+id/tv_total_visits"
                             android:text="0"
-                            android:textStyle="bold"
-                            android:textSize="18sp" />
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -117,17 +117,17 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
-                    android:orientation="horizontal"
+                    android:background="@drawable/box_background"
                     android:gravity="center_vertical"
-                    android:padding="12dp"
-                    android:background="@drawable/box_background">
+                    android:orientation="horizontal"
+                    android:padding="12dp">
 
                     <!-- Icon di kiri -->
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:src="@drawable/next_week_24dp"
-                        android:layout_marginEnd="12dp" />
+                        android:layout_marginEnd="12dp"
+                        android:src="@drawable/next_week_24dp" />
 
                     <!-- Teks di kanan -->
                     <LinearLayout
@@ -143,12 +143,12 @@
                             android:textSize="14sp" />
 
                         <TextView
+                            android:id="@+id/tv_visits_this_month"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:id="@+id/tv_visits_this_month"
                             android:text="0"
-                            android:textStyle="bold"
-                            android:textSize="18sp" />
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -159,68 +159,73 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
-                    android:orientation="horizontal"
+                    android:background="@drawable/box_background"
                     android:gravity="center_vertical"
-                    android:padding="12dp"
-                    android:background="@drawable/box_background">
+                    android:orientation="horizontal"
+                    android:padding="12dp">
                     <!-- Icon di kiri -->
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:src="@drawable/exercise_24dp"
-                        android:layout_marginEnd="12dp" />
+                        android:layout_marginEnd="12dp"
+                        android:src="@drawable/exercise_24dp" />
                     <!-- Teks di kanan -->
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:orientation="vertical">
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="gym per minggu"
                             android:textSize="14sp" />
+
                         <TextView
+                            android:id="@+id/tv_average_visits_per_week"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:id="@+id/tv_average_visits_per_week"
                             android:text="0"
-                            android:textStyle="bold"
-                            android:textSize="18sp" />
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
                     </LinearLayout>
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
-                    android:orientation="horizontal"
+                    android:background="@drawable/box_background"
                     android:gravity="center_vertical"
-                    android:padding="12dp"
-                    android:background="@drawable/box_background">
+                    android:orientation="horizontal"
+                    android:padding="12dp">
                     <!-- Icon di kiri -->
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:src="@drawable/av_timer_24dp"
-                        android:layout_marginEnd="12dp" />
+                        android:layout_marginEnd="12dp"
+                        android:src="@drawable/av_timer_24dp" />
                     <!-- Teks di kanan -->
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:orientation="vertical">
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Streak saat ini"
                             android:textSize="14sp" />
+
                         <TextView
+                            android:id="@+id/tv_current_streak"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:id="@+id/tv_current_streak"
                             android:text="0"
-                            android:textStyle="bold"
-                            android:textSize="18sp" />
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
                     </LinearLayout>
                 </LinearLayout>
             </GridLayout>
@@ -229,130 +234,141 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp"
+                android:layout_marginTop="16dp"
                 android:background="@drawable/box_background"
                 android:backgroundTint="@color/mylight"
-                android:layout_marginTop="16dp">
+                android:orientation="vertical"
+                android:padding="16dp">
                 <!-- Header: Icon + Title -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
                     <ImageView
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:src="@drawable/location_on_24dp"
                         android:layout_marginEnd="8dp"
+                        android:src="@drawable/location_on_24dp"
 
-                        app:tint="@color/myred"/>
+                        app:tint="@color/myred" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Kunjungan Terakhir"
-                        android:textStyle="bold"
+                        android:textColor="@color/myred"
                         android:textSize="16sp"
-                        android:textColor="@color/myred"/>
+                        android:textStyle="bold" />
                 </LinearLayout>
                 <!-- Isi: Teks Tengah -->
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
                     android:gravity="center">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Belum ada kunjungan gym"
-                    android:textSize="14sp"
-                    android:gravity="center"
-                    android:layout_gravity="center"/>
-            </FrameLayout>
-        </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/box_background"
-                android:backgroundTint="@color/mylight">
-                <!-- Header: Icon + Title -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/book_24dp"
-                        android:layout_marginEnd="8dp"
-                        app:tint="@color/myred"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Kelas Gym Terakhir"
-                        android:textStyle="bold"
-                        android:textSize="16sp"
-                        android:textColor="@color/myred"/>
-                </LinearLayout>
-                <!-- Isi: Teks Tengah -->
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="100dp"
-                    android:gravity="center">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Belum ada kunjungan gym"
-                        android:textSize="14sp"
+                        android:layout_gravity="center"
                         android:gravity="center"
-                        android:layout_gravity="center"/>
+                        android:text="Belum ada kunjungan gym"
+                        android:textSize="14sp" />
+
+
                 </FrameLayout>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/box_background"
-                android:backgroundTint="@color/mylight">
+                android:backgroundTint="@color/mylight"
+                android:orientation="vertical"
+                android:padding="16dp">
                 <!-- Header: Icon + Title -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
                     <ImageView
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:src="@drawable/history_24dp"
                         android:layout_marginEnd="8dp"
-                        app:tint="@color/myred"/>
+                        android:src="@drawable/book_24dp"
+                        app:tint="@color/myred" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Riwayat Membership"
-                        android:textStyle="bold"
+                        android:text="Kelas Gym Terakhir"
+                        android:textColor="@color/myred"
                         android:textSize="16sp"
-                        android:textColor="@color/myred"/>
+                        android:textStyle="bold" />
                 </LinearLayout>
                 <!-- Isi: Teks Tengah -->
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
                     android:gravity="center">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Belum ada kunjungan gym"
-                        android:textSize="14sp"
+                        android:layout_gravity="center"
                         android:gravity="center"
-                        android:layout_gravity="center"/>
+                        android:text="Belum ada kunjungan gym"
+                        android:textSize="14sp" />
+                </FrameLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/box_background"
+                android:backgroundTint="@color/mylight"
+                android:orientation="vertical"
+                android:padding="16dp">
+                <!-- Header: Icon + Title -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginEnd="8dp"
+                        android:src="@drawable/history_24dp"
+                        app:tint="@color/myred" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Riwayat Membership"
+                        android:textColor="@color/myred"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+                <!-- Isi: Teks Tengah -->
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:gravity="center">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="Belum ada kunjungan gym"
+                        android:textSize="14sp" />
                 </FrameLayout>
             </LinearLayout>
 
