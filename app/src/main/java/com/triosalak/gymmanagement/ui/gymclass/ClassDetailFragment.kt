@@ -77,9 +77,9 @@ class ClassDetailFragment : Fragment() {
         }
 
         // Observer untuk loading state
-        classViewModel.isLoadingDetail.observe(viewLifecycleOwner) { isLoading ->
-            binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
-        }
+//        classViewModel.isLoadingDetail.observe(viewLifecycleOwner) { isLoading ->
+//            binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+//        }
     }
 
     private fun setBtnBack() {
