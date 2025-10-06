@@ -6,8 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import coil.load
+import com.triosalak.gymmanagement.R
 import com.triosalak.gymmanagement.data.network.RetrofitInstance
 import com.triosalak.gymmanagement.databinding.FragmentDashboardBinding
+import com.triosalak.gymmanagement.utils.Constants
 import com.triosalak.gymmanagement.utils.SessionManager
 import com.triosalak.gymmanagement.viewmodel.DashboardViewModel
 
@@ -41,7 +44,17 @@ class DashboardFragment : Fragment() {
     private fun loadStatistics() {
         dashboardViewModel.getStatistic()
 
-        binding.textDashboard.text = "Selamat Datang, " + sessionManager.getCurrentUserSync()?.name
+        val user = sessionManager.getCurrentUserSync()
+
+        binding.textDashboard.text = "Selamat Datang, " + user?.name
+
+        val imageUrl = "${Constants.STORAGE_URL}${user?.profileImage}"
+
+        binding.ivProfilePicture.load(imageUrl) {
+            crossfade(true)
+            placeholder(R.drawable.ic_camera)
+            error(R.drawable.ic_camera)
+        }
 
         dashboardViewModel.myStatistic.observe(viewLifecycleOwner) { result ->
             result.onSuccess { statisticResponse ->

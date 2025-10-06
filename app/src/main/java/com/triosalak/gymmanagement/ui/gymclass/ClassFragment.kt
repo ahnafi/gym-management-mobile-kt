@@ -4,9 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.triosalak.gymmanagement.R
 import com.triosalak.gymmanagement.data.model.entity.GymClass
 import com.triosalak.gymmanagement.data.network.RetrofitInstance
 import com.triosalak.gymmanagement.databinding.FragmentClassBinding
@@ -54,12 +55,24 @@ class ClassFragment : Fragment() {
 
     private fun setupRecyclerView() {
         adapter = ClassAdapter(emptyList()) { gymClass ->
-            Toast.makeText(requireContext(), "Anda memilih: ${gymClass.name}", Toast.LENGTH_SHORT)
-                .show()
+            navigateToDetail(gymClass)
         }
 
         binding.recyclerViewKelas.layoutManager = GridLayoutManager(requireContext(), 2)
         binding.recyclerViewKelas.adapter = adapter
+    }
+
+    fun navigateToDetail(gymClass: GymClass) {
+        // Navigasi ke ClassDetailFragment dengan mengoper ID kelas
+        val classId = gymClass.id ?: return // Return jika ID null
+
+        val bundle = Bundle().apply {
+            putInt("classId", classId)
+        }
+        findNavController().navigate(
+            R.id.action_navigation_kelas_to_classDetailFragment,
+            bundle
+        )
     }
 
     private fun setupObservers() {
@@ -69,6 +82,11 @@ class ClassFragment : Fragment() {
             // jika halaman terakhir, sembunyikan tombol
             binding.btnLoadMore.visibility =
                 if (classViewModel.canLoadMore()) View.VISIBLE else View.GONE
+        }
+
+        // Observer untuk loading state
+        classViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+            binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
         }
     }
 
