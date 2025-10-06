@@ -266,6 +266,7 @@
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
+                    android:id="@+id/frame_recent_visits"
                     android:gravity="center">
 
                     <TextView
