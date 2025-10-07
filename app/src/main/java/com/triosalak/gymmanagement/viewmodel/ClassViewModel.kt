@@ -14,13 +14,23 @@ class ClassViewModel(private val api: SulthonApi) : ViewModel() {
     private val _gymClasses = MutableLiveData<List<GymClass>>(emptyList())
     val gymClasses: LiveData<List<GymClass>> get() = _gymClasses
 
+    private val _gymClassDetail = MutableLiveData<GymClass?>()
+    val gymClassDetail: LiveData<GymClass?> get() = _gymClassDetail
+
+    private val _isLoading = MutableLiveData<Boolean>(false)
+    val isLoading: LiveData<Boolean> get() = _isLoading
+
+    private val _isLoadingDetail = MutableLiveData<Boolean>(false)
+    val isLoadingDetail: LiveData<Boolean> get() = _isLoadingDetail
+
     private var currentPage = 1
     private var lastPage = 1
-    private var isLoading = false
+    private var isLoadingData = false
 
     fun getGymClass(page: Int = 1, append: Boolean = false) {
-        if (isLoading) return
-        isLoading = true
+        if (isLoadingData) return
+        isLoadingData = true
+        _isLoading.postValue(true)
 
         viewModelScope.launch {
             try {
@@ -44,11 +54,29 @@ class ClassViewModel(private val api: SulthonApi) : ViewModel() {
             } catch (e: Exception) {
                 Log.e("ClassViewModel", "Error: ${e.message}")
             } finally {
-                isLoading = false
+                isLoadingData = false
+                _isLoading.postValue(false)
             }
         }
     }
 
     fun canLoadMore(): Boolean = currentPage < lastPage
     fun getNextPage(): Int = currentPage + 1
+
+    fun getGymClassDetail(id: Int?) {
+        _isLoadingDetail.postValue(true)
+        viewModelScope.launch {
+            try {
+                val response = api.getGymClassDetail(id)
+                if (response.isSuccessful) {
+                    _gymClassDetail.postValue(response.body()?.data)
+                }
+            } catch (e: Exception) {
+                Log.e("ClassViewModel", "Error: ${e.message}")
+            } finally {
+                _isLoadingDetail.postValue(false)
+            }
+        }
+    }
+
 }

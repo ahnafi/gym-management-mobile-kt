@@ -16,6 +16,12 @@
         android:name="com.triosalak.gymmanagement.ui.gymclass.ClassFragment"
         android:label="@string/title_class"
         tools:layout="@layout/fragment_dashboard" />
+        android:label="@string/title_kelas"
+        tools:layout="@layout/fragment_class" >
+        <action
+            android:id="@+id/action_navigation_kelas_to_classDetailFragment"
+            app:destination="@id/classDetailFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_membership"
@@ -53,13 +59,14 @@
         tools:layout="@layout/fragment_verify_email" />
     <fragment
         android:id="@+id/changePasswordFragment"
+        tools:layout="@layout/fragment_change_password"
         android:name="com.triosalak.gymmanagement.ui.profile.ChangePasswordFragment"
         android:label="ChangePasswordFragment">
         <action
             android:id="@+id/action_changePasswordFragment_to_navigation_profile"
             app:destination="@id/navigation_profile" />
     </fragment>
-    
+
     <fragment
         android:id="@+id/membershipPackageDetailFragment"
         android:name="com.triosalak.gymmanagement.ui.membershippackages.MembershipPackageDetailFragment"
@@ -69,7 +76,7 @@
             android:name="packageId"
             app:argType="integer" />
     </fragment>
-    
+
     <fragment
         android:id="@+id/transactionDetailFragment"
         android:name="com.triosalak.gymmanagement.ui.transactions.TransactionDetailFragment"
@@ -78,5 +85,18 @@
         <argument
             android:name="transactionId"
             app:argType="integer" />
+
+    <fragment
+        android:id="@+id/classDetailFragment"
+        android:name="com.triosalak.gymmanagement.ui.gymclass.ClassDetailFragment"
+        android:label="ClassDetailFragment"
+        tools:layout="@layout/fragment_class_detail">
+        <argument
+            android:name="classId"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_classDetailFragment_to_navigation_kelas"
+            app:destination="@id/navigation_kelas" />
+
     </fragment>
 </navigation>

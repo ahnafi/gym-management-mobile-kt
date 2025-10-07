@@ -8,6 +8,7 @@ import com.triosalak.gymmanagement.R
 import com.triosalak.gymmanagement.data.model.entity.GymClass
 import com.triosalak.gymmanagement.databinding.ItemGymClassBinding
 import com.triosalak.gymmanagement.utils.Constants
+import com.triosalak.gymmanagement.utils.toRupiahInstant
 
 class ClassAdapter(
     private var classList: List<GymClass>,
@@ -18,7 +19,8 @@ class ClassAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: GymClass) {
             binding.tvGymName.text = item.name
-            binding.tvGymPrice.text = item.price?.toString() ?: "-"
+
+            binding.tvGymPrice.text = item.price?.toRupiahInstant() ?: "-"
             binding.tvGymDescription.text = item.description ?: "-"
 
             // Jika ada gambar, tampilkan gambar pertama pakai Coil

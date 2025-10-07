@@ -8,6 +8,7 @@ import com.triosalak.gymmanagement.data.model.request.InitiateMembershipPaymentR
 import com.triosalak.gymmanagement.data.model.response.ChangePasswordResponse
 import com.triosalak.gymmanagement.data.model.response.InitiateMembershipPaymentResponse
 import com.triosalak.gymmanagement.data.model.response.GetCurrentUserResponse
+import com.triosalak.gymmanagement.data.model.response.GetGymClassDetailResponse
 import com.triosalak.gymmanagement.data.model.response.GetGymClassesResponse
 import com.triosalak.gymmanagement.data.model.response.GetMyStatisticResponse
 import com.triosalak.gymmanagement.data.model.response.GetMembershipPackageResponse
@@ -17,6 +18,7 @@ import com.triosalak.gymmanagement.data.model.response.LoginResponse
 import com.triosalak.gymmanagement.data.model.response.RegisterResponse
 import com.triosalak.gymmanagement.data.model.response.ResendVerificationEmailResponse
 import com.triosalak.gymmanagement.data.model.response.UpdateProfileResponse
+import com.triosalak.gymmanagement.data.model.response.GetMyMembershipsResponse
 import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.Body
@@ -25,6 +27,7 @@ import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Part
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface SulthonApi {
@@ -62,6 +65,11 @@ interface SulthonApi {
         @Query("per_page") perPage: Int = 6
     ): Response<GetGymClassesResponse>
 
+    @GET("gym-classes/{id}")
+    suspend fun getGymClassDetail(
+        @Path("id") classId: Int?
+    ): Response<GetGymClassDetailResponse>
+
     @POST("resend-verification")
     suspend fun resendVerificationEmail(): Response<ResendVerificationEmailResponse>
 
@@ -98,4 +106,8 @@ interface SulthonApi {
     suspend fun initiateMembershipPayment(
         @Body initiateMembershipPaymentRequest: InitiateMembershipPaymentRequest
     ): Response<InitiateMembershipPaymentResponse>
+
+    @GET("membership/my-memberships")
+    suspend fun getMyMemberships(): Response<GetMyMembershipsResponse>
+
 }
