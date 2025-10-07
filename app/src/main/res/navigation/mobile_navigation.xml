@@ -15,13 +15,21 @@
         android:id="@+id/navigation_kelas"
         android:name="com.triosalak.gymmanagement.ui.gymclass.ClassFragment"
         android:label="@string/title_kelas"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_class" >
+        <action
+            android:id="@+id/action_navigation_kelas_to_classDetailFragment"
+            app:destination="@id/classDetailFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="com.triosalak.gymmanagement.ui.notifications.NotificationsFragment"
+        android:name="com.triosalak.gymmanagement.ui.membershippackages.MembershipPackagesFragment"
         android:label="@string/title_membership"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/fragment_membership_packages">
+        <action
+            android:id="@+id/action_membershipPackages_to_membershipPackageDetail"
+            app:destination="@id/membershipPackageDetailFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_profile"
@@ -39,10 +47,33 @@
         tools:layout="@layout/fragment_verify_email" />
     <fragment
         android:id="@+id/changePasswordFragment"
+        tools:layout="@layout/fragment_change_password"
         android:name="com.triosalak.gymmanagement.ui.profile.ChangePasswordFragment"
         android:label="ChangePasswordFragment">
         <action
             android:id="@+id/action_changePasswordFragment_to_navigation_profile"
             app:destination="@id/navigation_profile" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/membershipPackageDetailFragment"
+        android:name="com.triosalak.gymmanagement.ui.membershippackages.MembershipPackageDetailFragment"
+        android:label="Package Detail"
+        tools:layout="@layout/fragment_membership_package_detail">
+        <argument
+            android:name="packageId"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/classDetailFragment"
+        android:name="com.triosalak.gymmanagement.ui.gymclass.ClassDetailFragment"
+        android:label="ClassDetailFragment"
+        tools:layout="@layout/fragment_class_detail">
+        <argument
+            android:name="classId"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_classDetailFragment_to_navigation_kelas"
+            app:destination="@id/navigation_kelas" />
     </fragment>
 </navigation>

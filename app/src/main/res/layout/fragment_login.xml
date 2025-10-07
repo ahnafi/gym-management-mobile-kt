@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="24dp"
@@ -34,7 +33,9 @@
         app:layout_constraintTop_toBottomOf="@id/title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/password_layout">
+        app:layout_constraintBottom_toTopOf="@id/password_layout"
+        app:boxStrokeColor="@color/myred"
+        app:hintTextColor="@color/myred">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/email"
@@ -42,7 +43,7 @@
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
             android:autofillHints="emailAddress"
-            android:selectAllOnFocus="true" />
+            android:selectAllOnFocus="true"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -58,7 +59,9 @@
         app:layout_constraintTop_toBottomOf="@id/email_layout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/login">
+        app:layout_constraintBottom_toTopOf="@id/login"
+        app:boxStrokeColor="@color/myred"
+        app:hintTextColor="@color/myred">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/password"
@@ -80,6 +83,7 @@
         android:text="Login"
         android:textSize="16sp"
         android:textStyle="bold"
+        android:backgroundTint="@color/myred"
         style="@style/Widget.MaterialComponents.Button"
         app:layout_constraintTop_toBottomOf="@id/password_layout"
         app:layout_constraintStart_toStartOf="parent"
@@ -132,6 +136,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Daftar"
+        android:textColor="@color/myred"
         android:textSize="14sp"
         android:textStyle="bold"
         style="@style/Widget.MaterialComponents.Button.TextButton"

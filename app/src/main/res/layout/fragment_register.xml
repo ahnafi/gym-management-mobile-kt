@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="24dp"
@@ -34,7 +33,9 @@
         app:layout_constraintTop_toBottomOf="@id/title"
         app:layout_constraintBottom_toTopOf="@id/email_layout"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:boxStrokeColor="@color/myred"
+        app:hintTextColor="@color/myred">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_register_name"
@@ -57,7 +58,10 @@
         app:layout_constraintTop_toBottomOf="@id/name_layout"
         app:layout_constraintBottom_toTopOf="@id/password_layout"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+
+        app:boxStrokeColor="@color/myred"
+        app:hintTextColor="@color/myred">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_register_email"
@@ -81,7 +85,10 @@
         app:layout_constraintTop_toBottomOf="@id/email_layout"
         app:layout_constraintBottom_toTopOf="@id/password_confirmation_layout"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+
+        app:boxStrokeColor="@color/myred"
+        app:hintTextColor="@color/myred">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_register_password"
@@ -105,7 +112,10 @@
         app:layout_constraintTop_toBottomOf="@id/password_layout"
         app:layout_constraintBottom_toTopOf="@id/btn_register"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+
+        app:boxStrokeColor="@color/myred"
+        app:hintTextColor="@color/myred">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_register_password_confirmation"
@@ -131,7 +141,8 @@
         app:layout_constraintTop_toBottomOf="@id/password_confirmation_layout"
         app:layout_constraintBottom_toTopOf="@id/login_text"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:backgroundTint="@color/myred"/>
 
     <!-- Loading Progress -->
     <ProgressBar
@@ -172,6 +183,7 @@
         app:layout_constraintTop_toTopOf="@id/login_text"
         app:layout_constraintBottom_toBottomOf="@id/login_text"
         app:layout_constraintStart_toEndOf="@id/login_text"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textColor="@color/myred"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

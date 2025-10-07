@@ -1,60 +1,97 @@
 package com.triosalak.gymmanagement.ui.gymclass
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import coil.load
 import com.triosalak.gymmanagement.R
+import com.triosalak.gymmanagement.data.network.RetrofitInstance
+import com.triosalak.gymmanagement.databinding.FragmentClassDetailBinding
+import com.triosalak.gymmanagement.utils.Constants
+import com.triosalak.gymmanagement.viewmodel.ClassViewModel
+import java.util.Locale
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [KelasdFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ClassDetailFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private var _binding: FragmentClassDetailBinding? = null
+    private val binding get() = _binding!!
+
+    private lateinit var classViewModel: ClassViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_class_detail, container, false)
+    ): View {
+        _binding = FragmentClassDetailBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment KelasdFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ClassDetailFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val sessionManager = com.triosalak.gymmanagement.utils.SessionManager(requireContext())
+        classViewModel = ClassViewModel(RetrofitInstance.getApiService(sessionManager))
+
+        // Ambil ID kelas dari arguments
+        val classId = arguments?.getInt("classId")
+
+        // Fetch data detail kelas berdasarkan ID
+        if (classId != null) {
+            classViewModel.getGymClassDetail(classId)
+        }
+
+        setupObservers()
+
+        setBtnBack()
     }
+
+    private fun setupObservers() {
+        classViewModel.gymClassDetail.observe(viewLifecycleOwner) { gymClass ->
+            gymClass?.let {
+                // Display class name
+                binding.tvClassName.text = it.name
+
+                // Display class description
+                binding.tvClassDescription.text = it.description ?: "Tidak ada deskripsi"
+
+                // Display class price
+                val priceText = if (it.price != null) {
+                    "Rp ${String.format(Locale("id", "ID"), "%,d", it.price)}"
+                } else {
+                    "Harga belum tersedia"
+                }
+                binding.tvClassPrice.text = priceText
+
+                // Display class image
+                val imageUrl = it.images?.firstOrNull()
+                binding.ivClassImage.load(Constants.STORAGE_URL + imageUrl) {
+                    crossfade(true)
+                    placeholder(R.drawable.placeholder_image)
+                    error(R.drawable.placeholder_image)
+                }
+
+            }
+        }
+
+        // Observer untuk loading state
+//        classViewModel.isLoadingDetail.observe(viewLifecycleOwner) { isLoading ->
+//            binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+//        }
+    }
+
+    private fun setBtnBack() {
+        binding.btnBack.setOnClickListener {
+            findNavController().navigate(R.id.action_classDetailFragment_to_navigation_kelas)
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+
+    }
+
 }
