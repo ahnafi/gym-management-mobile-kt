@@ -29,7 +29,8 @@
                 android:background="@drawable/circle_background_primary"
                 android:src="@drawable/ic_arrow_back"
                 android:contentDescription="Back"
-                app:tint="@android:color/white" />
+                app:tint="@android:color/white"
+                android:backgroundTint="@color/myred" />
 
             <TextView
                 android:layout_width="0dp"
