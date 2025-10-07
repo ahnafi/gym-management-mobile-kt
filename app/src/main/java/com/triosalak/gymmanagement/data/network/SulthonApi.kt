@@ -4,13 +4,16 @@ import com.triosalak.gymmanagement.data.model.request.ChangePasswordRequest
 import com.triosalak.gymmanagement.data.model.request.LoginRequest
 import com.triosalak.gymmanagement.data.model.request.RegisterRequest
 import com.triosalak.gymmanagement.data.model.request.UpdateProfileRequest
+import com.triosalak.gymmanagement.data.model.request.InitiateMembershipPaymentRequest
 import com.triosalak.gymmanagement.data.model.response.ChangePasswordResponse
+import com.triosalak.gymmanagement.data.model.response.InitiateMembershipPaymentResponse
 import com.triosalak.gymmanagement.data.model.response.GetCurrentUserResponse
 import com.triosalak.gymmanagement.data.model.response.GetGymClassDetailResponse
 import com.triosalak.gymmanagement.data.model.response.GetGymClassesResponse
 import com.triosalak.gymmanagement.data.model.response.GetMyStatisticResponse
 import com.triosalak.gymmanagement.data.model.response.GetMembershipPackageResponse
 import com.triosalak.gymmanagement.data.model.response.GetMembershipPackagesResponse
+import com.triosalak.gymmanagement.data.model.response.GetTransactionsResponse
 import com.triosalak.gymmanagement.data.model.response.LoginResponse
 import com.triosalak.gymmanagement.data.model.response.RegisterResponse
 import com.triosalak.gymmanagement.data.model.response.ResendVerificationEmailResponse
@@ -85,6 +88,24 @@ interface SulthonApi {
     suspend fun getMembershipPackageDetail(
         @retrofit2.http.Path("id") packageId: Int
     ): Response<GetMembershipPackageResponse>
+
+    @GET("payments/my-transactions")
+    suspend fun getTransactions(
+        @Query("page") page: Int = 1,
+        @Query("per_page") perPage: Int = 15,
+        @Query("payment_status") paymentStatus: String? = null,
+        @Query("purchasable_type") purchasableType: String? = null
+    ): Response<GetTransactionsResponse>
+
+    @GET("payments/transactions/{id}")
+    suspend fun getTransactionDetail(
+        @retrofit2.http.Path("id") transactionId: Int
+    ): Response<GetTransactionsResponse>
+
+    @POST("payments/membership")
+    suspend fun initiateMembershipPayment(
+        @Body initiateMembershipPaymentRequest: InitiateMembershipPaymentRequest
+    ): Response<InitiateMembershipPaymentResponse>
 
     @GET("membership/my-memberships")
     suspend fun getMyMemberships(): Response<GetMyMembershipsResponse>

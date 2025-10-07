@@ -1,5 +1,6 @@
 package com.triosalak.gymmanagement.ui.membershippackages
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +16,7 @@ import com.triosalak.gymmanagement.data.network.RetrofitInstance
 import com.triosalak.gymmanagement.databinding.FragmentMembershipPackageDetailBinding
 import com.triosalak.gymmanagement.utils.SessionManager
 import com.triosalak.gymmanagement.viewmodel.MembershipPackageDetailViewModel
+import com.triosalak.gymmanagement.viewmodel.MembershipPaymentViewModel
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -25,7 +27,9 @@ class MembershipPackageDetailFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var detailViewModel: MembershipPackageDetailViewModel
+    private lateinit var paymentViewModel: MembershipPaymentViewModel
     private lateinit var sessionManager: SessionManager
+    private var currentPackage: MembershipPackage? = null
 
     private val packageId: Int by lazy {
         arguments?.getInt("packageId") ?: 0
@@ -44,7 +48,9 @@ class MembershipPackageDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         sessionManager = SessionManager(requireContext())
-        detailViewModel = MembershipPackageDetailViewModel(RetrofitInstance.getApiService(sessionManager))
+        val apiService = RetrofitInstance.getApiService(sessionManager)
+        detailViewModel = MembershipPackageDetailViewModel(apiService)
+        paymentViewModel = MembershipPaymentViewModel(apiService)
 
         setupClickListeners()
         observeViewModel()
@@ -57,13 +63,11 @@ class MembershipPackageDetailFragment : Fragment() {
         }
 
         binding.btnSelectPackage.setOnClickListener {
-            // Handle package selection
-            Toast.makeText(requireContext(), "Package selected!", Toast.LENGTH_SHORT).show()
-        }
-
-        binding.btnSharePackage.setOnClickListener {
-            // Handle package sharing
-            Toast.makeText(requireContext(), "Share functionality coming soon!", Toast.LENGTH_SHORT).show()
+            currentPackage?.let { packageDetail ->
+                showPaymentConfirmationDialog(packageDetail)
+            } ?: run {
+                Toast.makeText(requireContext(), "Data paket tidak tersedia", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -71,6 +75,7 @@ class MembershipPackageDetailFragment : Fragment() {
         detailViewModel.packageDetail.observe(viewLifecycleOwner) { result ->
             result.onSuccess { packageDetailResponse ->
                 val packageDetail = packageDetailResponse.data
+                currentPackage = packageDetail
                 bindPackageData(packageDetail)
             }.onFailure { exception ->
                 Toast.makeText(requireContext(), "Error: ${exception.message}", Toast.LENGTH_LONG).show()
@@ -80,6 +85,35 @@ class MembershipPackageDetailFragment : Fragment() {
 
         detailViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
             binding.progressBarDetail.visibility = if (isLoading) View.VISIBLE else View.GONE
+        }
+
+        // Payment ViewModel observers
+        paymentViewModel.paymentResult.observe(viewLifecycleOwner) { result ->
+            result.onSuccess { paymentResponse ->
+                val snapToken = paymentResponse.data?.snapToken
+                val message = "Pembayaran berhasil diinisiasi!\n\nSilakan lanjutkan pembayaran menggunakan Midtrans.\n\nToken: $snapToken"
+                
+                AlertDialog.Builder(requireContext())
+                    .setTitle("Pembayaran Berhasil Diinisiasi")
+                    .setMessage(message)
+                    .setPositiveButton("OK") { _, _ ->
+                        // Here you can navigate to payment page or open Midtrans SDK
+                        Toast.makeText(requireContext(), "Silakan selesaikan pembayaran Anda", Toast.LENGTH_LONG).show()
+                    }
+                    .setCancelable(false)
+                    .show()
+            }.onFailure { exception ->
+                Toast.makeText(
+                    requireContext(), 
+                    "Gagal memproses pembayaran: ${exception.message}", 
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
+
+        paymentViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+            binding.btnSelectPackage.isEnabled = !isLoading
+            binding.btnSelectPackage.text = if (isLoading) "Memproses..." else "Pilih Paket"
         }
     }
 
@@ -131,6 +165,40 @@ class MembershipPackageDetailFragment : Fragment() {
                 tvDetailCreatedAt.text = "N/A"
                 tvDetailUpdatedAt.text = "N/A"
             }
+        }
+    }
+
+    private fun showPaymentConfirmationDialog(packageDetail: MembershipPackage) {
+        val price = packageDetail.price ?: 0
+        val formatter = NumberFormat.getNumberInstance(Locale.forLanguageTag("id-ID"))
+        val formattedPrice = formatter.format(price)
+        
+        val message = """
+            Apakah Anda yakin ingin membeli paket membership ini?
+            
+            Paket: ${packageDetail.name}
+            Durasi: ${getDurationText(packageDetail.duration ?: 0)}
+            Harga: Rp $formattedPrice
+            
+            Setelah konfirmasi, Anda akan diarahkan ke halaman pembayaran Midtrans.
+        """.trimIndent()
+
+        AlertDialog.Builder(requireContext())
+            .setTitle("Konfirmasi Pembelian")
+            .setMessage(message)
+            .setPositiveButton("Ya, Beli Sekarang") { _, _ ->
+                paymentViewModel.initiatePayment(packageDetail.id ?: 0)
+            }
+            .setNegativeButton("Batal", null)
+            .show()
+    }
+
+    private fun getDurationText(duration: Int): String {
+        return when {
+            duration == 0 -> "Sekali Bayar"
+            duration >= 365 -> "${duration / 365} Tahun"
+            duration >= 30 -> "${duration / 30} Bulan"
+            else -> "$duration Hari"
         }
     }
 
