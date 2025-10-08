@@ -5,11 +5,13 @@ import com.triosalak.gymmanagement.data.model.request.LoginRequest
 import com.triosalak.gymmanagement.data.model.request.RegisterRequest
 import com.triosalak.gymmanagement.data.model.request.UpdateProfileRequest
 import com.triosalak.gymmanagement.data.model.request.InitiateMembershipPaymentRequest
+import com.triosalak.gymmanagement.data.model.request.InitiateGymClassPaymentRequest
 import com.triosalak.gymmanagement.data.model.response.ChangePasswordResponse
 import com.triosalak.gymmanagement.data.model.response.InitiateMembershipPaymentResponse
 import com.triosalak.gymmanagement.data.model.response.GetCurrentUserResponse
 import com.triosalak.gymmanagement.data.model.response.GetGymClassDetailResponse
 import com.triosalak.gymmanagement.data.model.response.GetGymClassesResponse
+import com.triosalak.gymmanagement.data.model.response.GetGymClassSchedulesResponse
 import com.triosalak.gymmanagement.data.model.response.GetMyStatisticResponse
 import com.triosalak.gymmanagement.data.model.response.GetMembershipPackageResponse
 import com.triosalak.gymmanagement.data.model.response.GetMembershipPackagesResponse
@@ -19,6 +21,7 @@ import com.triosalak.gymmanagement.data.model.response.RegisterResponse
 import com.triosalak.gymmanagement.data.model.response.ResendVerificationEmailResponse
 import com.triosalak.gymmanagement.data.model.response.UpdateProfileResponse
 import com.triosalak.gymmanagement.data.model.response.GetMyMembershipsResponse
+import com.triosalak.gymmanagement.data.model.response.InitiateGymClassPaymentResponse
 import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.Body
@@ -110,4 +113,16 @@ interface SulthonApi {
     @GET("membership/my-memberships")
     suspend fun getMyMemberships(): Response<GetMyMembershipsResponse>
 
+    @GET("gym-classes/{classId}/schedules")
+    suspend fun getGymClassSchedules(
+        @retrofit2.http.Path("classId") classId: Int,
+        @Query("start_date") startDate: String? = null,
+        @Query("end_date") endDate: String? = null,
+        @Query("per_page") perPage: Int = 15
+    ): Response<GetGymClassSchedulesResponse>
+
+    @POST("payments/gym-class")
+    suspend fun initiateGymClassPayment(
+        @Body initiateGymClassPaymentRequest: InitiateGymClassPaymentRequest
+    ): Response<InitiateGymClassPaymentResponse>
 }

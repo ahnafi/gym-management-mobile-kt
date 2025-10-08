@@ -2,7 +2,7 @@ package com.triosalak.gymmanagement.data.model.entity
 
 import com.google.gson.annotations.SerializedName
 
-data class GymClassSchedule(
+data class  GymClassSchedule(
 
     @SerializedName("id")
     val id: Int? = null,

@@ -20,8 +20,7 @@ class ClassAdapter(
         fun bind(item: GymClass) {
             binding.tvGymName.text = item.name
 
-            binding.tvGymPrice.text = item.price?.toRupiahInstant() ?: "-"
-            binding.tvGymDescription.text = item.description ?: "-"
+           binding.tvGymPrice.text = (item.price?.toRupiahInstant() ?: "-") + " / sesi"
 
             // Jika ada gambar, tampilkan gambar pertama pakai Coil
             val imageUrl = item.images?.firstOrNull()

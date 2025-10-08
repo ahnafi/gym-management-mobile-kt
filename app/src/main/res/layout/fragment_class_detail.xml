@@ -237,6 +237,68 @@
                 android:textSize="28sp"
                 android:textStyle="bold"
                 tools:text="Rp 250.000" />
+
+            <!-- Jadwal Kelas Section -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="Jadwal Kelas"
+                android:textColor="@color/myblack"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <!-- Loading indicator for schedules -->
+            <ProgressBar
+                android:id="@+id/progress_schedules"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginVertical="16dp"
+                android:indeterminateTint="@color/myred"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <!-- RecyclerView for schedules -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_schedules"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:nestedScrollingEnabled="false"
+                tools:itemCount="3"
+                tools:listitem="@layout/item_gym_class_schedule" />
+
+            <!-- Empty state for schedules -->
+            <LinearLayout
+                android:id="@+id/layout_empty_schedules"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="24dp"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Belum ada jadwal tersedia"
+                    android:textColor="#666666"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center"
+                    android:text="Jadwal kelas akan ditampilkan di sini ketika tersedia"
+                    android:textColor="#999999"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
         </LinearLayout>
 
         <!-- 4. FOOTER DI AKHIR KONTEN SCROLL -->

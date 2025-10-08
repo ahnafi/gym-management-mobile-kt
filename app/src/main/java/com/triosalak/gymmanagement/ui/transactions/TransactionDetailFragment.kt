@@ -10,7 +10,6 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.triosalak.gymmanagement.R
 import com.triosalak.gymmanagement.data.model.entity.PurchasableGymClass
 import com.triosalak.gymmanagement.data.model.entity.PurchasableMembershipPackage
@@ -139,10 +138,6 @@ class TransactionDetailFragment : Fragment() {
             setPurchasableTypeAndName(transaction)
             setAmount(transaction.amount)
             setDates(transaction.createdAt, transaction.paymentDate)
-
-
-            // Action buttons (for pending transactions)
-            setupActionButtons(transaction.paymentStatus)
         }
     }
 
@@ -225,19 +220,6 @@ class TransactionDetailFragment : Fragment() {
             }
         } else {
             binding.layoutPaymentDate.visibility = View.GONE
-        }
-    }
-
-    private fun setupActionButtons(paymentStatus: String?) {
-        if (paymentStatus?.lowercase() == "pending") {
-            binding.layoutActionButtons.visibility = View.VISIBLE
-            
-            binding.btnPayNow.setOnClickListener {
-                // TODO: Implement payment flow
-                Toast.makeText(requireContext(), "Fitur pembayaran akan segera tersedia", Toast.LENGTH_SHORT).show()
-            }
-        } else {
-            binding.layoutActionButtons.visibility = View.GONE
         }
     }
 
